@@ -1,212 +1,285 @@
 import "./App.css";
 
-import { useState, useEffect } from "react";
-import Check from "./Cartlag.svg?react";
+import { useState, useEffect, useRef } from "react";
+import FormInput from "./components/FormInput";
+import Check from "./components/Check";
 
+import html2canvas from "html2canvas";
+import DisplayData from "./components/DisplayData";
+import NameContainer from "./components/NameContainer";
+import Modal from "./components/Modal";
+import Navbar from "./components/Navbar";
+import chroma from "chroma-js";
+import SettingsModal from "./components/SettingsModal";
 function App() {
   const [selectedPart, setSelectedPart] = useState(null);
   const [bodyParts, setBodyParts] = useState({
-    Head: { value: "", unit: "mm" },
-    Neck: { value: "", unit: "mm" },
-    Chest: { value: "", unit: "mm" },
-    Shoulder: { value: "", unit: "mm" },
-    Arms: { value: "", unit: "mm" },
+    Head: { value: "", unit: "cm" },
+    Neck: { value: "", unit: "cm" },
+    Chest: { value: "", unit: "cm" },
+    Shoulder: { value: "", unit: "cm" },
+    Arms: { value: "", unit: "cm" },
     Hands: { value: "", unit: "mm" },
-    Waist: { value: "", unit: "mm" },
-    Hip: { value: "", unit: "mm" },
-    Thigh: { value: "", unit: "mm" },
-    Legs: { value: "", unit: "mm" },
-    Feet: { value: "", unit: "mm" },
+    Waist: { value: "", unit: "cm" },
+    Hip: { value: "", unit: "cm" },
+    Thigh: { value: "", unit: "cm" },
+    Legs: { value: "", unit: "cm" },
+    Feet: { value: "", unit: "EU" },
   });
   const [inputValue, setInputValue] = useState("");
+  const [newInputValue, setNewInputValue] = useState("");
   const [selectedUnit, setSelectedUnit] = useState("mm");
+  const [highlightedPart, setHighlightedPart] = useState(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        !event.target.closest(".cartlag-doll") &&
-        !event.target.closest(".data-form")
-      ) {
-        removeHighlight();
-        setSelectedPart(null);
-      }
-    };
+  const [nameValue, setNameValue] = useState("Guest");
+  const [nameAdded, setNameAdded] = useState(true);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [newCategory, setNewCategory] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [selectedColor, setSelectedColor] = useState("#d49769");
+  const [secondaryColor, setSecondaryColor] = useState("#c29477");
+  const [showSettings, setShowSettings] = useState(false);
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  const removeHighlight = () => {
-    document.querySelectorAll(".highlight").forEach((el) => {
-      el.classList.remove("highlight");
-    });
+  const handlePrimaryColorChange = (newColor) => {
+    setSelectedColor(newColor);
+    setSecondaryColor(chroma(newColor).brighten(0.8).hex());
   };
-
+  const dollRef = useRef(null);
   const handleClick = (event) => {
     const part = event.target.id;
 
-    if (selectedPart !== part) {
-      setSelectedPart(part);
-    }
+    setSelectedPart((prev) => (prev !== part ? part : null));
 
-    setSelectedPart(part);
-
-    document.querySelectorAll(".highlight").forEach((el) => {
-      el.classList.remove("highlight");
-    });
-
-    if (part) {
-      event.target.classList.add("highlight");
-    }
-
+    setHighlightedPart(part);
     setInputValue(bodyParts[part]?.value || "");
     setSelectedUnit(bodyParts[part]?.unit || "mm");
   };
 
+  useEffect(() => {
+    if (!selectedPart) {
+      setHighlightedPart(null);
+    }
+  }, [selectedPart]);
+
   const handleSave = (e) => {
     e.preventDefault();
+    if (inputValue.length <= 0) return;
+    setHighlightedPart(null);
     if (selectedPart) {
-      setBodyParts((prev) => ({
-        ...prev,
+      const updatedParts = {
+        ...bodyParts,
         [selectedPart]: { value: inputValue, unit: selectedUnit },
-      }));
+      };
+      setBodyParts(updatedParts);
+      localStorage.setItem("cartlagData", JSON.stringify(updatedParts));
+
+      setShowPopup(true);
+      setTimeout(() => setShowPopup(false), 2000);
+    }
+    setInputValue("");
+    setNewInputValue("");
+    setSelectedPart(null);
+  };
+
+  const handleNewCategorySave = (e) => {
+    e.preventDefault();
+    if (newInputValue.length <= 0) return;
+    setHighlightedPart(null);
+    setSelectedPart(null);
+
+    const updatedParts = {
+      ...bodyParts,
+      [newCategory]: { value: newInputValue, unit: selectedUnit },
+    };
+
+    setBodyParts(updatedParts);
+    setInputValue("");
+    setNewInputValue("");
+    setNewCategory("");
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 2000);
+  };
+
+  useEffect(() => {
+    const savedName = localStorage.getItem("cartlagName");
+    const savedData = localStorage.getItem("cartlagData");
+    const savedColor = localStorage.getItem("cartlagColor");
+    const savedSecondaryColor = localStorage.getItem("cartlagSecondaryColor");
+    if (savedName) {
+      setNameValue(savedName);
+      setNameAdded(false);
+    }
+    if (savedData) {
+      setBodyParts(JSON.parse(savedData));
+    }
+    if (savedColor) {
+      setSelectedColor(savedColor);
+    }
+    if (savedSecondaryColor) {
+      setSecondaryColor(savedSecondaryColor);
+    }
+  }, []);
+
+  const saveName = (e) => {
+    e.preventDefault();
+    if (nameValue.length <= 0) return;
+    localStorage.setItem("cartlagName", nameValue);
+    setNameAdded(false);
+    setIsEditingName(false);
+  };
+  const handleNameEdit = () => {
+    setIsEditingName(true);
+  };
+
+  useEffect(() => {
+    if (Object.values(bodyParts).some((part) => part.value !== "")) {
+      localStorage.setItem("cartlagData", JSON.stringify(bodyParts));
+    }
+  }, [bodyParts]);
+
+  const handleDownload = async () => {
+    setSelectedPart(null);
+    if (dollRef.current && !selectedPart) {
+      const canvas = await html2canvas(dollRef.current, {
+        backgroundColor: "#242424",
+      });
+      const imgData = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = imgData;
+      link.download = `${nameValue}_Cartlag_Measurements.png`;
+      link.click();
     }
   };
 
+  const handleInfoClick = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  useEffect(() => {
+    if (selectedColor) {
+      localStorage.setItem("cartlagColor", selectedColor);
+      localStorage.setItem("cartlagSecondaryColor", secondaryColor);
+      console.log("Color Saved:", secondaryColor);
+    }
+  }, [selectedColor, secondaryColor]);
+
+  const handleReset = () => {
+    setSelectedColor("#d49769");
+    setSecondaryColor("#c29477");
+    setNameValue("Guest");
+    setNameAdded(true);
+
+    const resetData = Object.keys(bodyParts).reduce((acc, part) => {
+      acc[part] = { unit: bodyParts[part].unit, value: "" };
+      return acc;
+    }, {});
+    setBodyParts(resetData);
+    setShowSettings(false);
+    localStorage.clear();
+    // window.location.reload();
+  };
+
+  const handleSettingsClick = () => {
+    setShowSettings(!showSettings);
+  };
+
+  const closeSettings = () => {
+    setShowSettings(false);
+  };
+
   return (
-    <div>
-      <nav className="navbar">
-        <h1>
-          CART<span className="lag-color">LAG</span>
-        </h1>
-      </nav>
-      <section className="main-layout">
-        <h2 className="instruction">
-          Select body parts to add your measurement
-        </h2>
-
-        <Check
-          onClick={handleClick}
-          style={{
-            cursor: "pointer",
-            width: "600px",
-            height: "600px",
-          }}
-          className="cartlag-doll"
+    <div className="project-div">
+      {showSettings && (
+        <SettingsModal
+          handleReset={handleReset}
+          selectedColor={selectedColor}
+          handlePrimaryColorChange={handlePrimaryColorChange}
+          closeSettings={closeSettings}
         />
-        <form onSubmit={handleSave} className="data-form">
-          <label className="selected-part">
-            {selectedPart ? selectedPart : "Select a body part"}
-          </label>
-          <div className="selected-form">
-            <input
-              type="text"
-              placeholder="Enter a value"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              className="value-input"
-            />
-            <select
-              value={selectedUnit}
-              onChange={(e) => setSelectedUnit(e.target.value)}
-            >
-              <option value="mm">mm</option>
-              <option value="cm">cm</option>
-              <option value="inches">inches</option>
-            </select>
-            <button type="submit" className="save-button">
-              Save
-            </button>
-          </div>
-        </form>
-        <ul className="data-summary">
-          <div className="name-input">
-            <h3 className="name-title">Name:</h3>
-            <input
-              type="text"
-              placeholder="enter a name"
-              className="name-input"
-            ></input>
-          </div>
+      )}
+      <Modal
+        showModal={showModal}
+        closeModal={closeModal}
+        selectedPart={selectedPart}
+      />
+      <Navbar />
 
-          {Object.entries(bodyParts).map(([part, data]) => (
-            <li key={part} className="list-data">
-              {part}: {data.value ? `${data.value} ${data.unit}` : ""}
-            </li>
-          ))}
-        </ul>
+      {showPopup && <div className="popup">Measurements saved ✅</div>}
+      <NameContainer
+        nameAdded={nameAdded}
+        nameValue={nameValue}
+        setNameValue={setNameValue}
+        saveName={saveName}
+        handleNameEdit={handleNameEdit}
+        isEditingName={isEditingName}
+        selectedColor={selectedColor}
+        setSelectedColor={setSelectedColor}
+        handlePrimaryColorChange={handlePrimaryColorChange}
+      />
+
+      <section className="main-layout">
+        <div className="instruction">
+          <FormInput
+            onHandleSave={handleSave}
+            onSelectedPart={selectedPart}
+            onInputValue={inputValue}
+            onSetInputValue={setInputValue}
+            setNewInputValue={setNewInputValue}
+            newInputValue={newInputValue}
+            onSelectedUnit={selectedUnit}
+            onSetSelectedUnit={setSelectedUnit}
+            onhandleNewCategorySave={handleNewCategorySave}
+            newCategory={newCategory}
+            setNewCategory={setNewCategory}
+            onInfoClick={handleInfoClick}
+          />
+        </div>
+
+        {/*  */}
+        <div
+          ref={dollRef}
+          className="card-layout"
+          style={{ backgroundColor: "#242424" }}
+        >
+          {/* <h1>
+            CART
+            <span className="lag-color">LAG</span>
+          </h1> */}
+          <div className="doll-summary">
+            <Check
+              handleClick={handleClick}
+              className="cartlag-doll"
+              highlightedPart={highlightedPart}
+              selectedColor={selectedColor}
+              secondaryColor={secondaryColor}
+            />
+            <DisplayData bodyParts={bodyParts} handleClick={handleClick} />
+          </div>
+        </div>
       </section>
+      <div className="download-button">
+        {" "}
+        <button onClick={handleDownload}>Download Profile</button>
+        <button className="reset-button" onClick={handleSettingsClick}>
+          Settings
+        </button>
+      </div>
+
+      {/*  */}
       <img
         src="src\background.jpg"
         alt="image of waste"
         className="main-image"
       />
       <h3 className="slogan-text">One measurement is better than guessing</h3>
-
       <h4>Project by Julian Sandstrom</h4>
     </div>
   );
 }
 
 export default App;
-
-// const AboutMe = () => {
-//   return <div>Frontend Developer with deep knowledge about React.</div>;
-// };
-
-// const images = [
-//   "https://images.unsplash.com/photo-1626808642875-0aa545482dfb",
-//   "https://images.unsplash.com/photo-1546842931-886c185b4c8c",
-//   "https://images.unsplash.com/photo-1520763185298-1b434c919102",
-//   "https://images.unsplash.com/photo-1442458017215-285b83f65851",
-//   "https://images.unsplash.com/photo-1496483648148-47c686dc86a8",
-//   "https://images.unsplash.com/photo-1591181520189-abcb0735c65d",
-// ];
-// return <MemoryGame images={[...images, ...images]} />;
-// }
-
-// const MemoryGame = ({ images }) => {
-// const [cards] = useState(images);
-// const [flipped, setFlipped] = useState([]);
-// const [matched, setMatched] = useState([]);
-
-// const handleClick = (index) => {
-//   if (
-//     flipped.length === 2 ||
-//     matched.includes(index) ||
-//     flipped.includes(index)
-//   ) {
-//     return;
-//   }
-//   console.log(index);
-//   setFlipped([...flipped, index]);
-// };
-
-// useEffect(() => {
-//   if (flipped.length === 2) {
-//     const [first, second] = flipped;
-//     console.log("run");
-//     if (cards[first] === cards[second]) {
-//       setMatched([...matched, first, second]);
-//     }
-
-//     setTimeout(() => setFlipped([]), 1000);
-//   }
-// }, [flipped]);
-
-// return (
-//   <div>
-//     {cards.map((item, idx) => (
-//       <div key={idx} onClick={() => handleClick(idx)}>
-//         {flipped.includes(idx) || matched.includes(idx) ? (
-//           <img src={item} alt="stock" height={"300px"} />
-//         ) : (
-//           "?"
-//         )}
-//       </div>
-//     ))}
-//   </div>
-// );
-// };

@@ -1,17 +1,7 @@
-<svg id='someome' xmlns="http://www.w3.org/2000/svg"  viewBox="210 0 200 710" >
+<svg id='someome' xmlns="http://www.w3.org/2000/svg"  viewBox="210 0 220 750" >
   <defs>
     <style>
-      .cls-1 {
-        fill: #d49769;
-      }
-
-      .cls-2 {
-        fill: #c29477;
-      }
-
-      .cls-3 {
-        fill: #fff;
-      }
+      
     </style>
   </defs>
 
