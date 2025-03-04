@@ -4,8 +4,9 @@ const Check = ({
   selectedColor,
   secondaryColor,
 }) => {
+  // style={{ width: "500px" }}
   return (
-    <div style={{ width: "500px" }}>
+    <div>
       <svg
         onClick={handleClick}
         id=""

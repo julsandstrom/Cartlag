@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { HexColorPicker } from "react-colorful";
+import ChangeName from "./ChangeName";
 
 function SettingsModal({
   handleReset,
   selectedColor,
   handlePrimaryColorChange,
   closeSettings,
+  changeNameProps,
 }) {
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -22,7 +24,13 @@ function SettingsModal({
 
         {!showConfirm && (
           <>
-            <button>Change Name</button>
+            <ChangeName
+              nameValue={changeNameProps.nameValue}
+              setNameValue={changeNameProps.setNameValue}
+            />
+            {/* <button className="button-text" onClick={handleNameEdit}>
+              Change Name
+            </button> */}
             <button
               style={{ marginLeft: "20px" }}
               onClick={() => setShowConfirm(!showConfirm)}

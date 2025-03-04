@@ -19,12 +19,12 @@ const FormInput = ({
           {onSelectedPart ? (
             ``
           ) : (
-            <>
+            <div className="select-body-header">
               <span className="lag-color">Select</span> a body part
               <button className="save-button " onClick={onInfoClick}>
                 Info
               </button>
-            </>
+            </div>
           )}{" "}
         </label>
         {onSelectedPart && (
@@ -58,7 +58,7 @@ const FormInput = ({
         )}{" "}
       </form>
 
-      <div className="new-category" style={{ marginTop: "250px" }}>
+      <div className="new-category-section">
         <h5 className="new-category-title">
           or <span className="lag-color">create</span> a new category:
         </h5>
@@ -68,28 +68,30 @@ const FormInput = ({
             type="text"
             value={newCategory}
             onChange={(e) => setNewCategory(e.target.value)}
-            className="value-input"
+            className="name-input "
           />
-          <label className="new-category-name">Value</label>
-          <input
-            type="number"
-            step={0.1}
-            placeholder=""
-            className="value-input"
-            value={newInputValue}
-            onChange={(e) => setNewInputValue(e.target.value)}
-          />
-          <select
-            value={onSelectedUnit}
-            onChange={(e) => onSetSelectedUnit(e.target.value)}
-            className="new-category-select"
-          >
-            <option value="mm">mm</option>
-            <option value="cm">cm</option>
-            <option value="EU">Shoe size(eu)</option>
-            <option value="Kg">Kg</option>
-            <option value="Inches">Inches</option>
-          </select>
+          <label className="new-category-value">Value</label>
+          <div className="value-wrapper">
+            <input
+              type="number"
+              step={0.1}
+              placeholder=""
+              className="new-value-input"
+              value={newInputValue}
+              onChange={(e) => setNewInputValue(e.target.value)}
+            />
+            <select
+              value={onSelectedUnit}
+              onChange={(e) => onSetSelectedUnit(e.target.value)}
+              className="new-category-select"
+            >
+              <option value="mm">mm</option>
+              <option value="cm">cm</option>
+              <option value="EU">Shoe size(eu)</option>
+              <option value="Kg">Kg</option>
+              <option value="Inches">Inches</option>
+            </select>
+          </div>
           <button type="submit" className="new-category-button">
             Save
           </button>

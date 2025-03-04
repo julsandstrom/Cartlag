@@ -32,14 +32,15 @@ function App() {
   const [highlightedPart, setHighlightedPart] = useState(null);
 
   const [nameValue, setNameValue] = useState("Guest");
-  const [nameAdded, setNameAdded] = useState(true);
-  const [isEditingName, setIsEditingName] = useState(false);
+
+  // const [isEditingName, setIsEditingName] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [newCategory, setNewCategory] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [selectedColor, setSelectedColor] = useState("#d49769");
   const [secondaryColor, setSecondaryColor] = useState("#c29477");
   const [showSettings, setShowSettings] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
 
   const handlePrimaryColorChange = (newColor) => {
     setSelectedColor(newColor);
@@ -64,7 +65,7 @@ function App() {
 
   const handleSave = (e) => {
     e.preventDefault();
-    if (inputValue.length <= 0) return;
+    // if (inputValue.length <= 0) return;
     setHighlightedPart(null);
     if (selectedPart) {
       const updatedParts = {
@@ -80,9 +81,11 @@ function App() {
     setInputValue("");
     setNewInputValue("");
     setSelectedPart(null);
+    setShowSummary(true);
   };
 
   const handleNewCategorySave = (e) => {
+    setShowSummary(true);
     e.preventDefault();
     if (newInputValue.length <= 0) return;
     setHighlightedPart(null);
@@ -108,7 +111,6 @@ function App() {
     const savedSecondaryColor = localStorage.getItem("cartlagSecondaryColor");
     if (savedName) {
       setNameValue(savedName);
-      setNameAdded(false);
     }
     if (savedData) {
       setBodyParts(JSON.parse(savedData));
@@ -121,16 +123,17 @@ function App() {
     }
   }, []);
 
-  const saveName = (e) => {
-    e.preventDefault();
-    if (nameValue.length <= 0) return;
-    localStorage.setItem("cartlagName", nameValue);
-    setNameAdded(false);
-    setIsEditingName(false);
-  };
-  const handleNameEdit = () => {
-    setIsEditingName(true);
-  };
+  // const saveName = (e) => {
+  //   e.preventDefault();
+  //   if (nameValue.length <= 0) return;
+  //   localStorage.setItem("cartlagName", nameValue);
+  //   setNameAdded(false);
+  //   // setIsEditingName(false);
+  // };
+  // const handleNameEdit = () => {
+  //   console.log("clicked");
+  //   setIsEditingName(true);
+  // };
 
   useEffect(() => {
     if (Object.values(bodyParts).some((part) => part.value !== "")) {
@@ -172,7 +175,6 @@ function App() {
     setSelectedColor("#d49769");
     setSecondaryColor("#c29477");
     setNameValue("Guest");
-    setNameAdded(true);
 
     const resetData = Object.keys(bodyParts).reduce((acc, part) => {
       acc[part] = { unit: bodyParts[part].unit, value: "" };
@@ -182,6 +184,7 @@ function App() {
     setShowSettings(false);
     localStorage.clear();
     // window.location.reload();
+    setShowSummary(false);
   };
 
   const handleSettingsClick = () => {
@@ -192,6 +195,14 @@ function App() {
     setShowSettings(false);
   };
 
+  const changeNameProps = {
+    nameValue,
+    setNameValue,
+    // saveName,
+    // handleNameEdit,
+    // isEditingName,
+  };
+
   return (
     <div className="project-div">
       {showSettings && (
@@ -200,6 +211,7 @@ function App() {
           selectedColor={selectedColor}
           handlePrimaryColorChange={handlePrimaryColorChange}
           closeSettings={closeSettings}
+          changeNameProps={changeNameProps}
         />
       )}
       <Modal
@@ -211,12 +223,8 @@ function App() {
 
       {showPopup && <div className="popup">Measurements saved ✅</div>}
       <NameContainer
-        nameAdded={nameAdded}
         nameValue={nameValue}
         setNameValue={setNameValue}
-        saveName={saveName}
-        handleNameEdit={handleNameEdit}
-        isEditingName={isEditingName}
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
         handlePrimaryColorChange={handlePrimaryColorChange}
@@ -258,7 +266,9 @@ function App() {
               selectedColor={selectedColor}
               secondaryColor={secondaryColor}
             />
-            <DisplayData bodyParts={bodyParts} handleClick={handleClick} />
+            {showSummary && (
+              <DisplayData bodyParts={bodyParts} handleClick={handleClick} />
+            )}
           </div>
         </div>
       </section>
