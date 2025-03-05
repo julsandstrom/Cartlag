@@ -1,6 +1,6 @@
 const NameContainer = ({ nameValue }) => {
   return (
-    <div style={{ minHeight: "30px" }} className="name-container edit-name">
+    <div className="name-container edit-name">
       {nameValue ? (
         <h2 className="hello-name">
           <span className="lag-color">Hello</span> {nameValue}!

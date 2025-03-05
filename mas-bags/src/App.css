@@ -810,7 +810,7 @@ input:hover {
 .slogan-text {
   text-align: center;
   padding: 100px;
-  font-size: 2rem;
+  font-size: 1rem;
 }
 
 .end-text {
@@ -934,7 +934,7 @@ small {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 50px;
+  margin-left: 0px;
   width: 100%;
   overflow: hidden;
 }
@@ -1027,6 +1027,7 @@ select {
 }
 .hello-name {
   margin-right: 20px;
+  font-size: 30px;
 }
 .confirm {
   height: 30px;
@@ -1220,7 +1221,7 @@ select {
 /* ----------------------------------------------------------------------------------------------------- */
 @media (max-width: 1980px) {
   .cartlag-doll-size {
-    width: 400px;
+    width: 350px;
   }
   .logo-text {
     font-size: 1rem;
@@ -1230,7 +1231,7 @@ select {
   }
   .main-layout {
     display: grid;
-    grid-template-columns: 430px 300px 1fr;
+    grid-template-columns: 480px 300px 1fr;
     grid-template-rows: auto;
   }
   .data-container {
@@ -1306,7 +1307,7 @@ select {
     padding-left: 10px;
     padding-right: 40px;
     width: 300px;
-    height: 650px;
+    height: 490px;
   }
   .instruction:hover {
     border: 1px solid #555555;
@@ -1392,7 +1393,7 @@ select {
   .slogan-text {
     text-align: center;
     padding: 100px;
-    font-size: 2rem;
+    font-size: 1rem;
   }
 
   .end-text {
@@ -1419,13 +1420,13 @@ select {
   }
 
   .name-container {
-    font-size: 1.5rem;
     font-weight: bold;
     display: flex;
     justify-content: center;
-    margin-left: 100px;
-    height: 90px;
+    margin-left: 0px;
+    height: 30px;
     margin-top: 0px;
+    padding: 0;
     align-items: center;
   }
 
@@ -1516,7 +1517,7 @@ select {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 50px;
+    margin-left: 0px;
     width: 100%;
     overflow: hidden;
   }
@@ -1969,7 +1970,7 @@ select {
   .slogan-text {
     text-align: center;
     padding: 100px;
-    font-size: 2rem;
+    font-size: 1rem;
   }
 
   .end-text {
@@ -2670,7 +2671,7 @@ select {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 50px;
+    margin-left: 0px;
     width: 100%;
     overflow: hidden;
   }

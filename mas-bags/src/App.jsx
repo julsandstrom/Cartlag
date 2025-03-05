@@ -333,13 +333,13 @@ function App() {
       </div>
 
       {/*  */}
-      <img
+      {/* <img
         src="src\background.jpg"
         alt="image of waste"
         className="main-image"
-      />
-      <h3 className="slogan-text">One measurement is better than guessing</h3>
-      <h4>Project by Julian Sandstrom</h4>
+      /> */}
+      <h3 className="slogan-text">We believe that your size is your data</h3>
+      <h4>Project by Julian Sandström</h4>
     </div>
   );
 }
