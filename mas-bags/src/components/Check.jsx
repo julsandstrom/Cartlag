@@ -6,7 +6,7 @@ const Check = ({
 }) => {
   // style={{ width: "500px" }}
   return (
-    <div>
+    <div className="cartlag-doll-size">
       <svg
         onClick={handleClick}
         id=""

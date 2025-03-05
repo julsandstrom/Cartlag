@@ -15,7 +15,7 @@ const ChangeName = ({ nameValue, setNameValue }) => {
   };
 
   return (
-    <div style={{ minHeight: "30px" }} className="name-container">
+    <>
       {!isEditingName ? (
         <div className="edit-name">
           <button className="button-text" onClick={handleNameEdit}>
@@ -24,9 +24,9 @@ const ChangeName = ({ nameValue, setNameValue }) => {
         </div>
       ) : (
         <div className="edit-name">
-          <form>
+          <form className="change-name-container">
             <label className="new-name">
-              <span className="lag-color">Enter</span> name:{"  "}
+              Enter name:{" "}
               <input
                 type="text"
                 value={nameValue}
@@ -40,7 +40,7 @@ const ChangeName = ({ nameValue, setNameValue }) => {
           </form>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

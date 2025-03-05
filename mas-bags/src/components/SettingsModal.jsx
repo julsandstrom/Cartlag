@@ -8,6 +8,7 @@ function SettingsModal({
   handlePrimaryColorChange,
   closeSettings,
   changeNameProps,
+  handleImport,
 }) {
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -21,33 +22,44 @@ function SettingsModal({
             onChange={handlePrimaryColorChange}
           />
         </div>
-
+        <div
+          className="import-profile-container"
+          onClick={() => document.querySelector(".import-json").click()}
+        >
+          {" "}
+          <label className="import-profile-text">Import Profile</label>
+          <input
+            type="file"
+            accept="application/json"
+            placeholder="Import"
+            onChange={handleImport}
+            className="import-json"
+            style={{ display: "none" }}
+          />
+        </div>
         {!showConfirm && (
           <>
             <ChangeName
               nameValue={changeNameProps.nameValue}
               setNameValue={changeNameProps.setNameValue}
             />
-            {/* <button className="button-text" onClick={handleNameEdit}>
-              Change Name
-            </button> */}
-            <button
-              style={{ marginLeft: "20px" }}
-              onClick={() => setShowConfirm(!showConfirm)}
-            >
+
+            <button onClick={() => setShowConfirm(!showConfirm)}>
               Delete Profile
             </button>
           </>
         )}
 
         {showConfirm && (
-          <div className="confirm" style={{ marginLeft: "50px" }}>
-            <p>Are you sure you want to delete your profile?</p>
+          <div className="confirm">
+            <p className="verification-delete">
+              Are you sure you want to delete your profile?
+            </p>
             <button onClick={handleReset} className="danger">
               Yes
             </button>
             <button
-              style={{ marginLeft: "20px" }}
+              style={{ marginLeft: "40px" }}
               onClick={() => setShowConfirm(false)}
               className="danger"
             >

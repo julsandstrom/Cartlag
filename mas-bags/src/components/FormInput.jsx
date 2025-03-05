@@ -11,10 +11,15 @@ const FormInput = ({
   onInfoClick,
   setNewInputValue,
   newInputValue,
+  stringError,
+  handleDelete,
 }) => {
   return (
     <>
       <form onSubmit={onHandleSave} className="data-form">
+        {stringError && (
+          <smaller className="error-message">Empty field error</smaller>
+        )}
         <label className="selected-part">
           {onSelectedPart ? (
             ``
@@ -53,11 +58,13 @@ const FormInput = ({
               <button type="submit" className="save-button ">
                 Save
               </button>
+              <button onClick={handleDelete} className="delete-symbol">
+                x
+              </button>
             </div>
           </>
         )}{" "}
       </form>
-
       <div className="new-category-section">
         <h5 className="new-category-title">
           or <span className="lag-color">create</span> a new category:

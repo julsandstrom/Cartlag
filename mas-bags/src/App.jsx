@@ -11,6 +11,7 @@ import Modal from "./components/Modal";
 import Navbar from "./components/Navbar";
 import chroma from "chroma-js";
 import SettingsModal from "./components/SettingsModal";
+
 function App() {
   const [selectedPart, setSelectedPart] = useState(null);
   const [bodyParts, setBodyParts] = useState({
@@ -33,7 +34,6 @@ function App() {
 
   const [nameValue, setNameValue] = useState("Guest");
 
-  // const [isEditingName, setIsEditingName] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [newCategory, setNewCategory] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -41,6 +41,8 @@ function App() {
   const [secondaryColor, setSecondaryColor] = useState("#c29477");
   const [showSettings, setShowSettings] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
+  // const [emptyString, setEmptyString] = useState("Error");
+  const [stringError, setStringError] = useState(false);
 
   const handlePrimaryColorChange = (newColor) => {
     setSelectedColor(newColor);
@@ -56,6 +58,20 @@ function App() {
     setInputValue(bodyParts[part]?.value || "");
     setSelectedUnit(bodyParts[part]?.unit || "mm");
   };
+  const handleDelete = () => {
+    if (selectedPart) {
+      const updatedParts = {
+        ...bodyParts,
+        [selectedPart]: { ...bodyParts[selectedPart], value: "" },
+      };
+      setBodyParts(updatedParts);
+      setInputValue("");
+      localStorage.setItem("cartlagData", JSON.stringify(updatedParts));
+      setSelectedPart(null);
+      setHighlightedPart(null);
+      console.log(`Deleted ${selectedPart}`);
+    }
+  };
 
   useEffect(() => {
     if (!selectedPart) {
@@ -65,8 +81,11 @@ function App() {
 
   const handleSave = (e) => {
     e.preventDefault();
+
     // if (inputValue.length <= 0) return;
+    if (inputValue.length > 5) return;
     setHighlightedPart(null);
+
     if (selectedPart) {
       const updatedParts = {
         ...bodyParts,
@@ -77,11 +96,13 @@ function App() {
 
       setShowPopup(true);
       setTimeout(() => setShowPopup(false), 2000);
+      setTimeout(() => setStringError(false), 2000);
     }
     setInputValue("");
     setNewInputValue("");
     setSelectedPart(null);
     setShowSummary(true);
+    localStorage.setItem("showSummary", "true");
   };
 
   const handleNewCategorySave = (e) => {
@@ -102,6 +123,7 @@ function App() {
     setNewCategory("");
     setShowPopup(true);
     setTimeout(() => setShowPopup(false), 2000);
+    localStorage.setItem("showSummary", "true");
   };
 
   useEffect(() => {
@@ -109,6 +131,7 @@ function App() {
     const savedData = localStorage.getItem("cartlagData");
     const savedColor = localStorage.getItem("cartlagColor");
     const savedSecondaryColor = localStorage.getItem("cartlagSecondaryColor");
+    const savedShowSummary = localStorage.getItem("showSummary");
     if (savedName) {
       setNameValue(savedName);
     }
@@ -121,19 +144,10 @@ function App() {
     if (savedSecondaryColor) {
       setSecondaryColor(savedSecondaryColor);
     }
+    if (savedShowSummary === "true") {
+      setShowSummary(true);
+    }
   }, []);
-
-  // const saveName = (e) => {
-  //   e.preventDefault();
-  //   if (nameValue.length <= 0) return;
-  //   localStorage.setItem("cartlagName", nameValue);
-  //   setNameAdded(false);
-  //   // setIsEditingName(false);
-  // };
-  // const handleNameEdit = () => {
-  //   console.log("clicked");
-  //   setIsEditingName(true);
-  // };
 
   useEffect(() => {
     if (Object.values(bodyParts).some((part) => part.value !== "")) {
@@ -152,7 +166,38 @@ function App() {
       link.href = imgData;
       link.download = `${nameValue}_Cartlag_Measurements.png`;
       link.click();
+
+      const jsonData = JSON.stringify({
+        name: nameValue,
+        measurements: bodyParts,
+        color: selectedColor,
+        secondaryColor: secondaryColor,
+        date: new Date().toLocaleDateString(),
+        version: "1.0.0",
+      });
+      const jsonBlob = new Blob([jsonData], { type: "application/json" });
+      const jsonLink = document.createElement("a");
+      jsonLink.href = URL.createObjectURL(jsonBlob);
+      jsonLink.download = `${nameValue}_Cartlag_Profile.json`;
+      jsonLink.click();
     }
+  };
+
+  const handleImport = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const importedData = JSON.parse(event.target.result);
+      setBodyParts(importedData.measurements);
+      setNameValue(importedData.name);
+      setSecondaryColor(importedData.secondaryColor);
+      setSelectedColor(importedData.color);
+      setShowSummary(true);
+      console.log("Imported Profile:", importedData);
+    };
+    reader.readAsText(file);
   };
 
   const handleInfoClick = () => {
@@ -198,13 +243,10 @@ function App() {
   const changeNameProps = {
     nameValue,
     setNameValue,
-    // saveName,
-    // handleNameEdit,
-    // isEditingName,
   };
 
   return (
-    <div className="project-div">
+    <div>
       {showSettings && (
         <SettingsModal
           handleReset={handleReset}
@@ -212,6 +254,7 @@ function App() {
           handlePrimaryColorChange={handlePrimaryColorChange}
           closeSettings={closeSettings}
           changeNameProps={changeNameProps}
+          handleImport={handleImport}
         />
       )}
       <Modal
@@ -233,6 +276,7 @@ function App() {
       <section className="main-layout">
         <div className="instruction">
           <FormInput
+            stringError={stringError}
             onHandleSave={handleSave}
             onSelectedPart={selectedPart}
             onInputValue={inputValue}
@@ -245,6 +289,7 @@ function App() {
             newCategory={newCategory}
             setNewCategory={setNewCategory}
             onInfoClick={handleInfoClick}
+            handleDelete={handleDelete}
           />
         </div>
 
