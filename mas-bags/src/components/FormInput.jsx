@@ -48,19 +48,16 @@ const FormInput = ({
               <select
                 value={onSelectedUnit}
                 onChange={(e) => onSetSelectedUnit(e.target.value)}
+                className="option-style"
               >
-                <option value="mm">mm</option>
-                <option value="cm">cm</option>
-                <option value="EU">Shoe size(eu)</option>
-                <option value="Kg">Kg</option>
-                <option value="Inches">Inches</option>
+                <option value="cm"> cm</option>
               </select>
               <button type="submit" className="save-button ">
                 Save
               </button>
-              <button onClick={handleDelete} className="delete-symbol">
-                x
-              </button>
+              <div onClick={handleDelete} className="delete-symbol">
+                ❌
+              </div>
             </div>
           </>
         )}{" "}

@@ -1,23 +1,44 @@
 import fakeBrandAPI from "./fakeBrandApi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BrandsModal from "./BrandsModal.jsx";
 
-const DisplayData = ({ bodyParts, handleClick }) => {
-  const [brandData, setBrandData] = useState(null);
+const DisplayData = ({
+  bodyParts,
+  handleClick,
+  setSelectedPart,
+  selectedPart,
+}) => {
   const [showModal, setShowModal] = useState(false);
   const [brandMatches, setBrandMatches] = useState([]);
 
-  const findBrands = async (part) => {
+  const findBrands = async (part, event) => {
+    event.stopPropagation();
+
+    handleClick({ target: { id: part } });
+    setSelectedPart(part);
+
+    console.log("Updated selectedPart:", part);
+
     const result = await fakeBrandAPI({ [part]: bodyParts[part] });
-    // alert(`Brands matching your ${part}: ${result.join(", ")}`);
     setBrandMatches(result);
-    setBrandData({ part, brands: result });
+
     setShowModal(true);
-    console.log(showModal);
   };
+
+  useEffect(() => {
+    if (selectedPart) {
+      (async () => {
+        const result = await fakeBrandAPI({
+          [selectedPart]: bodyParts[selectedPart],
+        });
+        setBrandMatches(result);
+      })();
+    }
+  }, [selectedPart]);
+
   const closeModal = () => {
     setShowModal(false);
-    setBrandData(null);
+    setSelectedPart(null);
   };
 
   return (
@@ -28,26 +49,28 @@ const DisplayData = ({ bodyParts, handleClick }) => {
           <li key={part} className="list-data" onClick={handleClick}>
             {data.value ? (
               <div className="list-items">
-                <span id={part} className=" summary-parts">
-                  {" "}
+                <span id={part} className="summary-parts">
                   {part}:
                 </span>{" "}
                 {data.value} {data.unit}
-                <div className="find-brand" onClick={() => findBrands(part)}>
+                <div
+                  className="find-brand"
+                  onClick={(e) => findBrands(part, e)}
+                >
                   Find Brands
                 </div>
               </div>
-            ) : (
-              ""
-            )}
+            ) : null}
           </li>
         ))}
       </ul>
-      {showModal && brandData && (
+
+      {showModal && selectedPart && (
         <BrandsModal
           showModal={showModal}
           closeModal={closeModal}
           brandMatches={brandMatches}
+          part={selectedPart}
         />
       )}
     </div>

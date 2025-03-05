@@ -262,7 +262,12 @@ function App() {
         closeModal={closeModal}
         selectedPart={selectedPart}
       />
-      <Navbar />
+      <div className="nav-section">
+        <Navbar />
+        <button className="settings-button" onClick={handleSettingsClick}>
+          Settings⚙️
+        </button>
+      </div>
 
       {showPopup && <div className="popup">Measurements saved ✅</div>}
       <NameContainer
@@ -312,7 +317,12 @@ function App() {
               secondaryColor={secondaryColor}
             />
             {showSummary && (
-              <DisplayData bodyParts={bodyParts} handleClick={handleClick} />
+              <DisplayData
+                setSelectedPart={setSelectedPart}
+                bodyParts={bodyParts}
+                handleClick={handleClick}
+                selectedPart={selectedPart}
+              />
             )}
           </div>
         </div>
@@ -320,9 +330,6 @@ function App() {
       <div className="download-button">
         {" "}
         <button onClick={handleDownload}>Download Profile</button>
-        <button className="reset-button" onClick={handleSettingsClick}>
-          Settings
-        </button>
       </div>
 
       {/*  */}

@@ -1,27 +1,22 @@
-// import React from "react";
-// import "./Modal.css";
-
-const Modal = ({ showModal, closeModal, brandMatches }) => {
+const Modal = ({ showModal, closeModal, brandMatches, part }) => {
   if (!showModal) return null;
-
   return (
     <div className="brand-modal-overlay" onClick={closeModal}>
-      {console.log("HERE IS THE CODE")}
       <div className="brand-modal-content" onClick={(e) => e.stopPropagation()}>
         <span className="close-button" onClick={closeModal}>
           ✖
         </span>
-        <h2>Recommended Brands</h2>
+        <h2 className="recommend-title">
+          Recommended Brands and sizes for {part}
+        </h2>
         {brandMatches.length > 0 ? (
-          <ul>
+          <ul className="brand-list-modal">
             {brandMatches.map((brand, index) => (
-              <li key={index} className="brand-list-modal">
-                {brand}
-              </li>
+              <li key={index}>{brand}</li>
             ))}
           </ul>
         ) : (
-          <p>No matches found.</p>
+          <p>No matches found. </p>
         )}
       </div>
     </div>

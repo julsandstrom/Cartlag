@@ -5,7 +5,7 @@ const Modal = ({ showModal, closeModal, selectedPart }) => {
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <img
-              src="src\Cartlag-Guide-XL.png"
+              src="src\measurement-guide.png"
               alt={`How to measure ${selectedPart}`}
               className="modal-image"
             />
