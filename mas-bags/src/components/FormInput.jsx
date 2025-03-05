@@ -67,15 +67,17 @@ const FormInput = ({
           or <span className="lag-color">create</span> a new category:
         </h5>
         <form onSubmit={onhandleNewCategorySave} className="new-category-form">
-          <label className="new-category-name">Name</label>
-          <input
-            type="text"
-            value={newCategory}
-            onChange={(e) => setNewCategory(e.target.value)}
-            className="name-input "
-          />
-          <label className="new-category-value">Value</label>
-          <div className="value-wrapper">
+          <label className="new-category-name">
+            Name
+            <input
+              type="text"
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.target.value)}
+              className="name-input "
+            />
+          </label>
+          <label className="new-category-value">
+            Value
             <input
               type="number"
               step={0.1}
@@ -84,18 +86,19 @@ const FormInput = ({
               value={newInputValue}
               onChange={(e) => setNewInputValue(e.target.value)}
             />
-            <select
-              value={onSelectedUnit}
-              onChange={(e) => onSetSelectedUnit(e.target.value)}
-              className="new-category-select"
-            >
-              <option value="mm">mm</option>
-              <option value="cm">cm</option>
-              <option value="EU">Shoe size(eu)</option>
-              <option value="Kg">Kg</option>
-              <option value="Inches">Inches</option>
-            </select>
-          </div>
+          </label>
+          <select
+            value={onSelectedUnit}
+            onChange={(e) => onSetSelectedUnit(e.target.value)}
+            className="new-category-select"
+          >
+            <option value="mm">mm</option>
+            <option value="cm">cm</option>
+            <option value="EU">Shoe size(eu)</option>
+            <option value="Kg">Kg</option>
+            <option value="Inches">Inches</option>
+          </select>
+
           <button type="submit" className="new-category-button">
             Save
           </button>

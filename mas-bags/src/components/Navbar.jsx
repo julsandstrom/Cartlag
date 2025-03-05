@@ -7,7 +7,7 @@ const Navbar = () => {
           LAG <span className="tm-text">™</span>{" "}
         </span>
       </h1>
-      <small className=".logo-slogan">
+      <small className="logo-slogan">
         Your size. <span className="lag-color">Your data.</span>
       </small>
     </nav>

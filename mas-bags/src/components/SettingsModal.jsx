@@ -44,7 +44,10 @@ function SettingsModal({
               setNameValue={changeNameProps.setNameValue}
             />
 
-            <button onClick={() => setShowConfirm(!showConfirm)}>
+            <button
+              onClick={() => setShowConfirm(!showConfirm)}
+              className="button-text-delete"
+            >
               Delete Profile
             </button>
           </>

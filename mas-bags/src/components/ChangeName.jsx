@@ -18,27 +18,26 @@ const ChangeName = ({ nameValue, setNameValue }) => {
     <>
       {!isEditingName ? (
         <div className="edit-name">
-          <button className="button-text" onClick={handleNameEdit}>
+          <button className="button-text-name" onClick={handleNameEdit}>
             Change Name
           </button>
         </div>
       ) : (
-        <div className="edit-name">
-          <form className="change-name-container">
-            <label className="new-name">
-              Enter name:{" "}
-              <input
-                type="text"
-                value={nameValue}
-                onChange={(e) => setNameValue(e.target.value)}
-                className="value-input"
-              />
-            </label>
-            <button className="button-text" onClick={(e) => saveName(e)}>
-              Save
-            </button>
-          </form>
-        </div>
+        <form className="change-name-container">
+          <label className="new-name">
+            <h6>Enter name: </h6>
+          </label>
+          <input
+            type="text"
+            value={nameValue}
+            onChange={(e) => setNameValue(e.target.value)}
+            className="value-input-name"
+          />
+
+          <button className="button-text" onClick={(e) => saveName(e)}>
+            Save
+          </button>
+        </form>
       )}
     </>
   );

@@ -42,7 +42,7 @@ const DisplayData = ({
   };
 
   return (
-    <div>
+    <div className="data-container">
       <ul className="data-summary">
         <h2 className="summary-text">Summary:</h2>
         {Object.entries(bodyParts).map(([part, data]) => (
