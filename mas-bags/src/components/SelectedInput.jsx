@@ -6,7 +6,6 @@ const SelectedInput = ({
   handleDelete,
   onSelectedUnit,
 }) => {
-  const inputFlex = window.innerWidth > 1200 ? 70 : 44;
   return (
     <div className="selection-output-container">
       <div className="selection-input-unit">

@@ -7,7 +7,8 @@ import "@fontsource/jost/700.css";
 import CartlagDoll from "./components/CartlagDoll";
 import SelectGreeting from "./components/SelectGreeting";
 import SelectedInput from "./components/SelectedInput";
-
+import mobileImg from "./assets/image-section-mobile.svg";
+import desktopImg from "./assets/image-section.svg";
 import html2canvas from "html2canvas";
 import DisplayData from "./components/DisplayData";
 import NameContainer from "./components/NameContainer";
@@ -53,6 +54,8 @@ function App() {
     setSelectedColor(newColor);
     setSecondaryColor(chroma(newColor).brighten(0.8).hex());
   };
+
+  const mobileImage = window.innerWidth > 650 ? desktopImg : mobileImg;
   const dollRef = useRef(null);
   const handleClick = (event) => {
     const part = event.target.id;
@@ -357,22 +360,10 @@ function App() {
             secondaryColor={secondaryColor}
           />
         </div>
-        {/* </section> */}
-        {/* <div className="download-button">
-        {" "}
-        <button onClick={handleDownload}>Download</button>
-      </div> */}
-
-        {/*  */}
-        {/*  */}
-        {/* <div>
-        <h3 className="slogan-text">We believe that your size is your data</h3>
-      
-      </div> */}
       </div>{" "}
       <img
-        src="src\background.jpg"
-        alt="image of waste"
+        src={mobileImage}
+        alt="environmental message"
         className="main-image"
       />
       <div className="project-by-container">
