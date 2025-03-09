@@ -1,15 +1,19 @@
-const Navbar = () => {
+import { Settings } from "lucide-react";
+const Navbar = ({ handleSettingsClick }) => {
+  const iconSize = window.innerWidth > 800 ? 70 : 44;
   return (
     <nav className="navbar">
-      <h1 className="logo-text">
-        CART
-        <span className="lag-color">
-          LAG <span className="tm-text">™</span>{" "}
-        </span>
-      </h1>
-      <small className="logo-slogan">
-        Your size. <span className="lag-color">Your data.</span>
-      </small>
+      <div className="logotype">
+        <img
+          src="src\assets\logotype.svg"
+          alt="Cartlag Logo"
+          className="logo"
+        />
+      </div>
+
+      <div className="settings-button" onClick={handleSettingsClick}>
+        <Settings size={iconSize} />
+      </div>
     </nav>
   );
 };

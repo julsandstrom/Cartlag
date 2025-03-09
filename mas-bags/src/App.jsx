@@ -1,8 +1,12 @@
 import "./App.css";
 
 import { useState, useEffect, useRef } from "react";
-import FormInput from "./components/FormInput";
-import Check from "./components/Check";
+import "@fontsource/jost/400.css";
+import "@fontsource/jost/700.css";
+
+import CartlagDoll from "./components/CartlagDoll";
+import SelectGreeting from "./components/SelectGreeting";
+import SelectedInput from "./components/SelectedInput";
 
 import html2canvas from "html2canvas";
 import DisplayData from "./components/DisplayData";
@@ -11,22 +15,25 @@ import Modal from "./components/Modal";
 import Navbar from "./components/Navbar";
 import chroma from "chroma-js";
 import SettingsModal from "./components/SettingsModal";
+import NewCategoryForm from "./components/NewCategoryForm";
+
+const initialBodyParts = {
+  Head: { value: "", unit: "cm" },
+  Neck: { value: "", unit: "cm" },
+  Chest: { value: "", unit: "cm" },
+  Shoulder: { value: "", unit: "cm" },
+  Arms: { value: "", unit: "cm" },
+  Hands: { value: "", unit: "cm" },
+  Waist: { value: "", unit: "cm" },
+  Hip: { value: "", unit: "cm" },
+  Thigh: { value: "", unit: "cm" },
+  Legs: { value: "", unit: "cm" },
+  Feet: { value: "", unit: "cm" },
+};
 
 function App() {
   const [selectedPart, setSelectedPart] = useState(null);
-  const [bodyParts, setBodyParts] = useState({
-    Head: { value: "", unit: "cm" },
-    Neck: { value: "", unit: "cm" },
-    Chest: { value: "", unit: "cm" },
-    Shoulder: { value: "", unit: "cm" },
-    Arms: { value: "", unit: "cm" },
-    Hands: { value: "", unit: "mm" },
-    Waist: { value: "", unit: "cm" },
-    Hip: { value: "", unit: "cm" },
-    Thigh: { value: "", unit: "cm" },
-    Legs: { value: "", unit: "cm" },
-    Feet: { value: "", unit: "EU" },
-  });
+  const [bodyParts, setBodyParts] = useState(initialBodyParts);
   const [inputValue, setInputValue] = useState("");
   const [newInputValue, setNewInputValue] = useState("");
   const [selectedUnit, setSelectedUnit] = useState("mm");
@@ -41,9 +48,7 @@ function App() {
   const [secondaryColor, setSecondaryColor] = useState("#c29477");
   const [showSettings, setShowSettings] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
-  // const [emptyString, setEmptyString] = useState("Error");
-  const [stringError, setStringError] = useState(false);
-
+  const [formPosition, setFormPosition] = useState({ top: 0, left: 0 });
   const handlePrimaryColorChange = (newColor) => {
     setSelectedColor(newColor);
     setSecondaryColor(chroma(newColor).brighten(0.8).hex());
@@ -58,6 +63,27 @@ function App() {
     setInputValue(bodyParts[part]?.value || "");
     setSelectedUnit(bodyParts[part]?.unit || "mm");
   };
+  useEffect(() => {
+    function updateFormPosition() {
+      if (dollRef.current) {
+        const rect = dollRef.current.getBoundingClientRect();
+        setFormPosition({
+          top: rect.top + window.scrollY + 10,
+          left: rect.left + window.scrollX,
+        });
+      }
+    }
+
+    updateFormPosition();
+
+    window.addEventListener("resize", updateFormPosition);
+    window.addEventListener("scroll", updateFormPosition);
+
+    return () => {
+      window.removeEventListener("resize", updateFormPosition);
+      window.removeEventListener("scroll", updateFormPosition);
+    };
+  }, [dollRef]);
   const handleDelete = () => {
     if (selectedPart) {
       const updatedParts = {
@@ -69,7 +95,6 @@ function App() {
       localStorage.setItem("cartlagData", JSON.stringify(updatedParts));
       setSelectedPart(null);
       setHighlightedPart(null);
-      console.log(`Deleted ${selectedPart}`);
     }
   };
 
@@ -79,9 +104,10 @@ function App() {
     }
   }, [selectedPart]);
 
-  const handleSave = (e) => {
-    e.preventDefault();
+  const handleSave = (e, part = selectedPart) => {
+    if (e && e.preventDefault) e.preventDefault();
 
+    if (!part) return;
     // if (inputValue.length <= 0) return;
     if (inputValue.length > 5) return;
     setHighlightedPart(null);
@@ -96,17 +122,13 @@ function App() {
 
       setShowPopup(true);
       setTimeout(() => setShowPopup(false), 2000);
-      setTimeout(() => setStringError(false), 2000);
     }
     setInputValue("");
     setNewInputValue("");
     setSelectedPart(null);
-    setShowSummary(true);
-    localStorage.setItem("showSummary", "true");
   };
 
   const handleNewCategorySave = (e) => {
-    setShowSummary(true);
     e.preventDefault();
     if (newInputValue.length <= 0) return;
     setHighlightedPart(null);
@@ -131,7 +153,7 @@ function App() {
     const savedData = localStorage.getItem("cartlagData");
     const savedColor = localStorage.getItem("cartlagColor");
     const savedSecondaryColor = localStorage.getItem("cartlagSecondaryColor");
-    const savedShowSummary = localStorage.getItem("showSummary");
+
     if (savedName) {
       setNameValue(savedName);
     }
@@ -144,9 +166,6 @@ function App() {
     if (savedSecondaryColor) {
       setSecondaryColor(savedSecondaryColor);
     }
-    if (savedShowSummary === "true") {
-      setShowSummary(true);
-    }
   }, []);
 
   useEffect(() => {
@@ -157,15 +176,21 @@ function App() {
 
   const handleDownload = async () => {
     setSelectedPart(null);
-    if (dollRef.current && !selectedPart) {
-      const canvas = await html2canvas(dollRef.current, {
-        backgroundColor: "#242424",
-      });
-      const imgData = canvas.toDataURL("image/png");
-      const link = document.createElement("a");
-      link.href = imgData;
-      link.download = `${nameValue}_Cartlag_Measurements.png`;
-      link.click();
+    setShowSummary(true);
+
+    setTimeout(async () => {
+      const cardRef = document.querySelector(".modal-overlay-summary");
+
+      if (cardRef) {
+        const canvas = await html2canvas(cardRef, {
+          backgroundColor: "#242424",
+        });
+        const imgData = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.href = imgData;
+        link.download = `${nameValue}_Cartlag_Measurements.png`;
+        link.click();
+      }
 
       const jsonData = JSON.stringify({
         name: nameValue,
@@ -175,12 +200,13 @@ function App() {
         date: new Date().toLocaleDateString(),
         version: "1.0.0",
       });
+
       const jsonBlob = new Blob([jsonData], { type: "application/json" });
       const jsonLink = document.createElement("a");
       jsonLink.href = URL.createObjectURL(jsonBlob);
       jsonLink.download = `${nameValue}_Cartlag_Profile.json`;
       jsonLink.click();
-    }
+    }, 300);
   };
 
   const handleImport = (e) => {
@@ -194,8 +220,13 @@ function App() {
       setNameValue(importedData.name);
       setSecondaryColor(importedData.secondaryColor);
       setSelectedColor(importedData.color);
-      setShowSummary(true);
-      console.log("Imported Profile:", importedData);
+      // setShowSummary(true);
+
+      // 🔥 Tiny Scroll Trick to Force Reflow
+      setTimeout(() => {
+        window.scrollBy(0, 1); // Scroll down 1px
+        window.scrollBy(0, -1); // Scroll back up 1px
+      }, 50); // Delay to ensure state updates first
     };
     reader.readAsText(file);
   };
@@ -212,7 +243,6 @@ function App() {
     if (selectedColor) {
       localStorage.setItem("cartlagColor", selectedColor);
       localStorage.setItem("cartlagSecondaryColor", secondaryColor);
-      console.log("Color Saved:", secondaryColor);
     }
   }, [selectedColor, secondaryColor]);
 
@@ -246,7 +276,7 @@ function App() {
   };
 
   return (
-    <div>
+    <>
       {showSettings && (
         <SettingsModal
           handleReset={handleReset}
@@ -255,92 +285,102 @@ function App() {
           closeSettings={closeSettings}
           changeNameProps={changeNameProps}
           handleImport={handleImport}
+          handleDownload={handleDownload}
         />
       )}
-      <Modal
-        showModal={showModal}
-        closeModal={closeModal}
-        selectedPart={selectedPart}
-      />
-      <div className="nav-section">
-        <Navbar />
-        <button className="settings-button" onClick={handleSettingsClick}>
-          Settings⚙️
-        </button>
-      </div>
+      <div className="page-layout">
+        <Modal
+          showModal={showModal}
+          closeModal={closeModal}
+          selectedPart={selectedPart}
+        />
+        <div className="nav-section">
+          <Navbar handleSettingsClick={handleSettingsClick} />
+        </div>
 
-      {showPopup && <div className="popup">Measurements saved ✅</div>}
-      <NameContainer
-        nameValue={nameValue}
-        setNameValue={setNameValue}
-        selectedColor={selectedColor}
-        setSelectedColor={setSelectedColor}
-        handlePrimaryColorChange={handlePrimaryColorChange}
-      />
-
-      <section className="main-layout">
-        <div className="instruction">
-          <FormInput
-            stringError={stringError}
-            onHandleSave={handleSave}
-            onSelectedPart={selectedPart}
-            onInputValue={inputValue}
-            onSetInputValue={setInputValue}
+        {showPopup && (
+          <div className="popup">
+            <h3 className="popup-text">Measurements saved ✅</h3>
+          </div>
+        )}
+        <NameContainer nameValue={nameValue} />
+        <>
+          <div className="selection-greeting">
+            <SelectGreeting
+              onSelectedPart={selectedPart}
+              showSummary={showSummary}
+              setShowSummary={setShowSummary}
+            />
+            {selectedPart && (
+              <>
+                <SelectedInput
+                  onSelectedPart={selectedPart}
+                  onInputValue={inputValue}
+                  onSetInputValue={setInputValue}
+                  onHandleSave={handleSave}
+                  handleDelete={handleDelete}
+                  onSelectedUnit={selectedUnit}
+                />
+              </>
+            )}
+          </div>{" "}
+          <NewCategoryForm
+            onhandleNewCategorySave={handleNewCategorySave}
+            newCategory={newCategory}
+            setNewCategory={setNewCategory}
             setNewInputValue={setNewInputValue}
             newInputValue={newInputValue}
             onSelectedUnit={selectedUnit}
             onSetSelectedUnit={setSelectedUnit}
-            onhandleNewCategorySave={handleNewCategorySave}
-            newCategory={newCategory}
-            setNewCategory={setNewCategory}
-            onInfoClick={handleInfoClick}
-            handleDelete={handleDelete}
+            formPosition={formPosition}
+          />
+        </>
+        <div ref={dollRef} className="cartlag-wrapper">
+          <DisplayData
+            setSelectedPart={setSelectedPart}
+            bodyParts={bodyParts}
+            handleClick={handleClick}
+            selectedPart={selectedPart}
+            showSummary={showSummary}
+            setShowSummary={setShowSummary}
+            selectedColor={selectedColor}
+            secondaryColor={secondaryColor}
+            initialBodyParts={initialBodyParts}
+            nameValue={nameValue}
+          />
+
+          <CartlagDoll
+            handleClick={handleClick}
+            className="cartlag-doll"
+            highlightedPart={highlightedPart}
+            selectedColor={selectedColor}
+            secondaryColor={secondaryColor}
           />
         </div>
+        {/* </section> */}
+        {/* <div className="download-button">
+        {" "}
+        <button onClick={handleDownload}>Download</button>
+      </div> */}
 
         {/*  */}
-        <div
-          ref={dollRef}
-          className="card-layout"
-          style={{ backgroundColor: "#242424" }}
-        >
-          {/* <h1>
-            CART
-            <span className="lag-color">LAG</span>
-          </h1> */}
-          <div className="doll-summary">
-            <Check
-              handleClick={handleClick}
-              className="cartlag-doll"
-              highlightedPart={highlightedPart}
-              selectedColor={selectedColor}
-              secondaryColor={secondaryColor}
-            />
-            {showSummary && (
-              <DisplayData
-                setSelectedPart={setSelectedPart}
-                bodyParts={bodyParts}
-                handleClick={handleClick}
-                selectedPart={selectedPart}
-              />
-            )}
-          </div>
-        </div>
-      </section>
-      <div className="download-button">
-        {" "}
-        <button onClick={handleDownload}>Download Profile</button>
-      </div>
-
-      {/*  */}
-      {/* <img
+        {/*  */}
+        {/* <div>
+        <h3 className="slogan-text">We believe that your size is your data</h3>
+      
+      </div> */}
+      </div>{" "}
+      <img
         src="src\background.jpg"
         alt="image of waste"
         className="main-image"
-      /> */}
-      <h3 className="slogan-text">We believe that your size is your data</h3>
-      <h4>Project by Julian Sandström</h4>
-    </div>
+      />
+      <div className="project-by-container">
+        {" "}
+        <span className="project-by">Project by</span>
+        <h4>Julian Sandström</h4>
+      </div>
+    </>
   );
 }
 

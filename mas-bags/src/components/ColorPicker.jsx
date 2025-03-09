@@ -1,13 +1,14 @@
-const ColorPicker = ({ selectedColor, setSelectedColor }) => {
-  return (
-    <>
-      <input
-        type="color"
-        value={selectedColor}
-        onChange={(e) => setSelectedColor(e.target.value)}
-      />
-    </>
-  );
-};
+// const ColorPicker = ({ selectedColor, setSelectedColor }) => {
+//   return (
+//     <>
+//       <input
+//         type="color"
+//         className="color-picker"
+//         value={selectedColor}
+//         onChange={(e) => setSelectedColor(e.target.value)}
+//       />
+//     </>
+//   );
+// };
 
-export default ColorPicker;
+// export default ColorPicker;

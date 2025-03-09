@@ -1,13 +1,13 @@
 const NameContainer = ({ nameValue }) => {
   return (
-    <div className="name-container edit-name">
+    <div className="name-container ">
       {nameValue ? (
         <h2 className="hello-name">
-          <span className="lag-color">Hello</span> {nameValue}!
+          <span className="lag-color hello">Hello </span> {nameValue}!
         </h2>
       ) : (
         <h2 className="hello-name">
-          <span className="lag-color">Hello </span>Guest!
+          <span className="lag-color hello">Hello </span> Guest!
         </h2>
       )}
     </div>

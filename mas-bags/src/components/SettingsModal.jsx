@@ -1,7 +1,9 @@
-import { useState } from "react";
-import { HexColorPicker } from "react-colorful";
-import ChangeName from "./ChangeName";
-
+import { useState, useRef, useEffect } from "react";
+import EditProfile from "./EditProfile";
+// import { HexColorPicker } from "react-colorful";
+// import ChangeName from "./ChangeName";
+import { X } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 function SettingsModal({
   handleReset,
   selectedColor,
@@ -9,65 +11,158 @@ function SettingsModal({
   closeSettings,
   changeNameProps,
   handleImport,
+  handleDownload,
 }) {
   const [showConfirm, setShowConfirm] = useState(false);
+  const [position, setPosition] = useState({ x: 100, y: 100 });
+  const [dragging, setDragging] = useState(false);
+  const [changingColor, setChangingColor] = useState(false);
+  const [editProfile, setEditProfile] = useState(false);
+  const modalRef = useRef(null);
+  const offset = useRef({ x: 0, y: 0 });
+
+  const handleStart = (e) => {
+    if (e.target.closest(".no-drag")) return;
+    setDragging(true);
+
+    const clientX = e.type.includes("touch") ? e.touches[0].clientX : e.clientX;
+    const clientY = e.type.includes("touch") ? e.touches[0].clientY : e.clientY;
+
+    offset.current = {
+      x: clientX - position.x,
+      y: clientY - position.y,
+    };
+  };
+
+  const handleMove = (e) => {
+    if (!dragging) return;
+
+    const clientX = e.type.includes("touch") ? e.touches[0].clientX : e.clientX;
+    const clientY = e.type.includes("touch") ? e.touches[0].clientY : e.clientY;
+
+    setPosition({
+      x: clientX - offset.current.x,
+      y: clientY - offset.current.y,
+    });
+
+    e.preventDefault();
+  };
+
+  const handleEnd = () => {
+    setDragging(false);
+  };
+
+  useEffect(() => {
+    if (dragging) {
+      document.addEventListener("mousemove", handleMove);
+      document.addEventListener("mouseup", handleEnd);
+      document.addEventListener("touchmove", handleMove, { passive: false });
+      document.addEventListener("touchend", handleEnd);
+    } else {
+      document.removeEventListener("mousemove", handleMove);
+      document.removeEventListener("mouseup", handleEnd);
+      document.removeEventListener("touchmove", handleMove);
+      document.removeEventListener("touchend", handleEnd);
+    }
+
+    return () => {
+      document.removeEventListener("mousemove", handleMove);
+      document.removeEventListener("mouseup", handleEnd);
+      document.removeEventListener("touchmove", handleMove);
+      document.removeEventListener("touchend", handleEnd);
+    };
+  }, [dragging]);
 
   return (
-    <div className="modal-overlay" onClick={closeSettings}>
-      <div className="settings-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="color-picker">
-          <h3>Change Doll Color</h3>
-          <HexColorPicker
-            color={selectedColor}
-            onChange={handlePrimaryColorChange}
-          />
-        </div>
-        <div
-          className="import-profile-container"
-          onClick={() => document.querySelector(".import-json").click()}
-        >
-          {" "}
-          <label className="import-profile-text">Import Profile</label>
-          <input
-            type="file"
-            accept="application/json"
-            placeholder="Import"
-            onChange={handleImport}
-            className="import-json"
-            style={{ display: "none" }}
-          />
-        </div>
-        {!showConfirm && (
-          <>
-            <ChangeName
-              nameValue={changeNameProps.nameValue}
-              setNameValue={changeNameProps.setNameValue}
-            />
+    <div
+      ref={modalRef}
+      className="modal-overlay"
+      onMouseDown={handleStart}
+      onTouchStart={handleStart}
+      style={{
+        position: "fixed",
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        cursor: dragging ? "grabbing" : "grab",
+        touchAction: "none",
+        userSelect: "none",
+        zIndex: 9999,
+      }}
+    >
+      <div className="menu-button-container">
+        {editProfile ? (
+          <button
+            onClick={() => setEditProfile(false)}
+            className="settings-return"
+          >
+            <ArrowLeft />
+          </button>
+        ) : (
+          <div style={{ width: "100px" }}></div>
+        )}
+        <button onClick={closeSettings} className="close-settings-button">
+          <X />
+        </button>
+      </div>
 
-            <button
-              onClick={() => setShowConfirm(!showConfirm)}
-              className="button-text-delete"
+      <div onClick={(e) => e.stopPropagation()}>
+        {editProfile ? (
+          <EditProfile
+            changingColor={changingColor}
+            selectedColor={selectedColor}
+            handlePrimaryColorChange={handlePrimaryColorChange}
+            showConfirm={showConfirm}
+            setChangingColor={setChangingColor}
+            changeNameProps={changeNameProps}
+            setShowConfirm={setShowConfirm}
+          />
+        ) : (
+          <>
+            {" "}
+            <div className="list-button-container">
+              <button
+                onClick={() => setEditProfile(true)}
+                className="list-button"
+              >
+                Edit Profile
+              </button>
+            </div>
+            <div
+              className="import-profile-container no-drag"
+              onClick={() => document.querySelector(".import-json").click()}
             >
-              Delete Profile
-            </button>
+              <button className="import-profile-button">Import Profile</button>
+              <input
+                type="file"
+                accept="application/json"
+                placeholder="Import"
+                onChange={handleImport}
+                className="import-json"
+              />
+            </div>
+            <div className="list-button-container no-drag">
+              <button onClick={handleDownload} className="list-button">
+                Download Profile
+              </button>
+            </div>
           </>
         )}
 
         {showConfirm && (
           <div className="confirm">
             <p className="verification-delete">
-              Are you sure you want to delete your profile?
+              You want to delete your profile?
             </p>
-            <button onClick={handleReset} className="danger">
-              Yes
-            </button>
-            <button
-              style={{ marginLeft: "40px" }}
-              onClick={() => setShowConfirm(false)}
-              className="danger"
-            >
-              No
-            </button>
+            <div className="verify-buttons">
+              <button onClick={handleReset} className="yes-delete">
+                Yes
+              </button>
+              <button
+                onClick={() => setShowConfirm(false)}
+                className="no-delete"
+              >
+                No
+              </button>
+            </div>
           </div>
         )}
       </div>
