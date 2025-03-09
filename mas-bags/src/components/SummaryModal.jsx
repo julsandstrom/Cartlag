@@ -1,4 +1,5 @@
 import CartlagDoll from "./CartlagDoll";
+import logotype from "../assets/logotype.svg";
 const SummaryModal = ({
   showModal,
   closeModal,
@@ -22,7 +23,7 @@ const SummaryModal = ({
       <div className="modal-overlay-summary" onClick={closeModal}>
         <div className="logotype logotype-summary">
           <img
-            src="src\assets\logotype.svg"
+            src={logotype}
             alt="Cartlag Logo"
             className="logo logotype-card"
           />

@@ -660,6 +660,7 @@ button:hover {
     margin-bottom: 20px;
     width: 70px;
     height: 40px;
+    padding-left: 5px;
   }
 
   .selected-part {
@@ -1843,6 +1844,7 @@ button:hover {
     margin-bottom: 20px;
     width: 70px;
     height: 40px;
+    padding-left: 5px;
   }
 
   .selected-part {
@@ -2994,6 +2996,7 @@ button:hover {
     margin-bottom: 20px;
     width: 70px;
     height: 28px;
+    padding-left: 5px;
   }
 
   .selected-part {
