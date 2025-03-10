@@ -7,6 +7,7 @@ const NewCategoryForm = ({
   onSelectedUnit,
   onSetSelectedUnit,
   formPosition,
+  placeholderMessage,
 }) => {
   return (
     <>
@@ -20,21 +21,29 @@ const NewCategoryForm = ({
       >
         <form onSubmit={onhandleNewCategorySave} className="new-category-form">
           <label className="new-category-name">
-            Custom name
+            Label{" "}
+            {placeholderMessage && <p className="error-text">empty field!</p>}
             <input
               type="text"
+              placeholder="type here"
               value={newCategory}
-              onChange={(e) => setNewCategory(e.target.value)}
+              onChange={(e) => {
+                const inputValue = e.target.value;
+                if (/^[A-Za-z\s]*$/.test(inputValue)) {
+                  setNewCategory(inputValue);
+                }
+              }}
               className="new-name-input "
             />
           </label>
 
           <label className="new-category-value">
-            Value
+            Measurement{" "}
+            {placeholderMessage && <p className="error-text">empty field!</p>}
             <input
               type="number"
               step={0.1}
-              placeholder=""
+              placeholder="type here"
               className="new-value-input"
               value={newInputValue}
               onChange={(e) => setNewInputValue(e.target.value)}

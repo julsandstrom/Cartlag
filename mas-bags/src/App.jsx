@@ -50,6 +50,8 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
   const [formPosition, setFormPosition] = useState({ top: 0, left: 0 });
+  const [placeholderMessage, setPlaceHolderMessage] = useState(false);
+  const [inputMessage, setInputMessage] = useState(false);
   const handlePrimaryColorChange = (newColor) => {
     setSelectedColor(newColor);
     setSecondaryColor(chroma(newColor).brighten(0.8).hex());
@@ -111,8 +113,12 @@ function App() {
     if (e && e.preventDefault) e.preventDefault();
 
     if (!part) return;
-    // if (inputValue.length <= 0) return;
-    if (inputValue.length > 5) return;
+    if (inputValue.length <= 0) {
+      setInputMessage(true);
+      setTimeout(() => setInputMessage(false), 3000);
+      return;
+    }
+    if (inputValue.length > 3) return;
     setHighlightedPart(null);
 
     if (selectedPart) {
@@ -133,7 +139,11 @@ function App() {
 
   const handleNewCategorySave = (e) => {
     e.preventDefault();
-    if (newInputValue.length <= 0) return;
+    if (newInputValue.length <= 0) {
+      setPlaceHolderMessage(true);
+      setTimeout(() => setPlaceHolderMessage(false), 3000);
+      return;
+    }
     setHighlightedPart(null);
     setSelectedPart(null);
 
@@ -141,7 +151,7 @@ function App() {
       ...bodyParts,
       [newCategory]: { value: newInputValue, unit: selectedUnit },
     };
-
+    setPlaceHolderMessage(false);
     setBodyParts(updatedParts);
     setInputValue("");
     setNewInputValue("");
@@ -323,6 +333,7 @@ function App() {
                   onHandleSave={handleSave}
                   handleDelete={handleDelete}
                   onSelectedUnit={selectedUnit}
+                  inputMessage={inputMessage}
                 />
               </>
             )}
@@ -336,7 +347,8 @@ function App() {
             onSelectedUnit={selectedUnit}
             onSetSelectedUnit={setSelectedUnit}
             formPosition={formPosition}
-          />
+            placeholderMessage={placeholderMessage}
+          />{" "}
         </>
         <div ref={dollRef} className="cartlag-wrapper">
           <DisplayData

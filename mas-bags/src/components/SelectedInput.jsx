@@ -5,6 +5,7 @@ const SelectedInput = ({
   onHandleSave,
   handleDelete,
   onSelectedUnit,
+  inputMessage,
 }) => {
   return (
     <div className="selection-output-container">
@@ -13,11 +14,12 @@ const SelectedInput = ({
         {/*  */}
         <input
           type="number"
-          placeholder=""
+          placeholder={inputMessage ? "empty" : "value"}
           value={onInputValue}
           onChange={(e) => onSetInputValue(e.target.value)}
           className="value-input"
         />
+
         <div value="cm" className="unit-value">
           {" "}
           {onSelectedUnit}

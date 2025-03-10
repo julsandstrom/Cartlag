@@ -21,12 +21,8 @@ const SummaryModal = ({
   return (
     <>
       <div className="modal-overlay-summary" onClick={closeModal}>
-        <div className="logotype logotype-summary">
-          <img
-            src={logotype}
-            alt="Cartlag Logo"
-            className="logo logotype-card"
-          />
+        <div className="logotype-summary">
+          <img src={logotype} alt="Cartlag Logo" className="logotype-card" />
         </div>{" "}
         <h1 className="summary-name">{nameValue}</h1>
         <CartlagDoll
