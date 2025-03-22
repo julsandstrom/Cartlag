@@ -8,4 +8,4 @@ This means you can view and use the code for learning and inspiration, but not f
     You cannot use Cartlag or its concept for commercial purposes.
     If you modify or build upon this project, you must share your changes under the same license.
 
-📩 Contact: juliinsandstrom@gmail.com
+📩 Contact: juliiansandstrom@gmail.com
