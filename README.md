@@ -1,4 +1,4 @@
-Cartlag – Your Size, Your Data
+Cartlag – Your Size. Your Data.  Visit the live site:https://cartlag.com
 
 🚀 Cartlag is a personal project, licensed under CC BY-NC 4.0.
 This means you can view and use the code for learning and inspiration, but not for commercial purposes.
