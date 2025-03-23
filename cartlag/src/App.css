@@ -1235,11 +1235,22 @@ h2 {
   align-items: flex-end;
   font-size: 0.7rem;
 }
+.modal-wrapper {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem; /* ensures it doesn't hug screen edge */
+  background: rgba(0, 0, 0, 0.4); /* optional dim */
+  z-index: 999;
+}
 .modal-overlay-summary {
   position: fixed;
   top: 0;
   left: 0;
-  width: 420px;
+  width: 100%;
+  max-width: 420px;
 
   background: linear-gradient(
     to bottom,
@@ -1248,8 +1259,8 @@ h2 {
     #5d3f3a 100%
   );
   display: grid;
-  grid-template-columns: 230px 170px;
-  grid-template-rows: 100px 80px 380px auto;
+  grid-template-columns: 55% 45%;
+  grid-template-rows: 100px 80px 290px 100px;
 
   align-items: start;
   gap: 0;
@@ -1257,12 +1268,20 @@ h2 {
   padding: 0;
   z-index: 1100;
   height: 570px;
+  aspect-ratio: 420 / 570;
+
   border: none;
   border-radius: 2px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+@media (max-width: 419px) {
+  .modal-overlay-summary {
+    transform: scale(calc(100vw / 420));
+  }
 }
 .logotype-summary {
-  grid-row: 1;
+  grid-row: 4;
   grid-column: 1;
   align-self: flex-start;
   justify-self: start;
@@ -1285,7 +1304,8 @@ h2 {
 }
 
 .logotype-card {
-  height: 30px;
+  height: 50px;
+  margin-left: 10px;
 }
 .modal-content-summary {
   padding-top: 25px;
@@ -1306,7 +1326,7 @@ h2 {
 
   left: 0;
 
-  max-width: 250px;
+  max-width: 200px;
   align-self: start;
   justify-self: start;
 }

@@ -28,25 +28,27 @@ const SummaryModal = ({
 
   return (
     <>
-      <div className="modal-overlay-summary" onClick={handleCloseModal}>
-        <div className="logotype-summary">
-          <img src={logotype} alt="Cartlag Logo" className="logotype-card" />
-        </div>{" "}
-        <div className="summary-name-date">
-          <h1 className="summary-name">{nameValue}</h1>
-          <p className="current-date">{getFormattedDate()}</p>
+      <div className="modal-wrapper">
+        <div className="modal-overlay-summary" onClick={handleCloseModal}>
+          <div className="logotype-summary">
+            <img src={logotype} alt="Cartlag Logo" className="logotype-card" />
+          </div>{" "}
+          <div className="summary-name-date">
+            <h1 className="summary-name">{nameValue}</h1>
+            <p className="current-date">{getFormattedDate()}</p>
+          </div>
+          <CartlagDoll
+            className="cartlag-doll-summary"
+            secondaryColor={secondaryColor}
+            selectedColor={selectedColor}
+          />
+          <div
+            className="modal-content-summary"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {children}
+          </div>{" "}
         </div>
-        <CartlagDoll
-          className="cartlag-doll-summary"
-          secondaryColor={secondaryColor}
-          selectedColor={selectedColor}
-        />
-        <div
-          className="modal-content-summary"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {children}
-        </div>{" "}
       </div>
     </>
   );
