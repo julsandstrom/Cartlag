@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 const SelectedInput = ({
   onSelectedPart,
   onInputValue,
@@ -5,34 +7,86 @@ const SelectedInput = ({
   onHandleSave,
   handleDelete,
   onSelectedUnit,
-  inputMessage,
+  findBrands,
+  showModal,
+  setShowModal,
 }) => {
+  const [sliderValue, setSliderValue] = useState(Number(onInputValue) || 100);
+
+  useEffect(() => {
+    const incomingValue = Number(onInputValue);
+    if (!isNaN(incomingValue)) {
+      setSliderValue(incomingValue);
+    }
+  }, [onSelectedPart]);
+
+  useEffect(() => {
+    if (!showModal || !onSelectedPart || !onInputValue) return;
+
+    const delay = setTimeout(() => {
+      findBrands(onSelectedPart, null, {
+        value: onInputValue,
+        unit: onSelectedUnit,
+      });
+    }, 200);
+
+    return () => clearTimeout(delay);
+  }, [onInputValue, showModal]);
+
+  const handleSliderChange = (e) => {
+    const value = Number(e.target.value);
+    setSliderValue(value);
+    onSetInputValue(value);
+  };
+
   return (
     <div className="selection-output-container">
       <div className="selection-input-unit">
-        <label className="selected-part ">{onSelectedPart}</label>
-        {/*  */}
-        <input
-          type="number"
-          placeholder={inputMessage ? "empty" : "value"}
-          value={onInputValue}
-          onChange={(e) => onSetInputValue(e.target.value)}
-          onFocus={() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className="value-input"
-        />
-
-        <div value="cm" className="unit-value">
+        <div className="slider-container">
           {" "}
-          {onSelectedUnit}
+          <div className="part-value-wrap">
+            <label className="selected-part">{onSelectedPart}</label>
+            <div className="slider-value-display">
+              {sliderValue} {onSelectedUnit}
+            </div>
+          </div>
+          <input
+            type="range"
+            min={1}
+            max={250}
+            value={sliderValue}
+            onChange={handleSliderChange}
+            className="slider"
+          />{" "}
         </div>
       </div>
-      {/*  */}
+
       <div className="selection-save-delete-button">
-        <button onClick={onHandleSave} className="save-button ">
+        <button onClick={onHandleSave} className="save-button">
           save
         </button>
+
+        {!showModal ? (
+          <button
+            className="recommend-button"
+            onClick={() =>
+              findBrands(onSelectedPart, null, {
+                value: onInputValue,
+                unit: onSelectedUnit,
+              })
+            }
+          >
+            fit tips
+          </button>
+        ) : (
+          <button
+            className="recommend-button"
+            onClick={() => setShowModal(false)}
+          >
+            close
+          </button>
+        )}
+
         <button onClick={handleDelete} className="delete-button">
           delete
         </button>

@@ -97,7 +97,7 @@ function SettingsModal({
             <ArrowLeft />
           </button>
         ) : (
-          <div style={{ width: "100px" }}></div>
+          <div className="drag-handle" />
         )}
         <button onClick={closeSettings} className="close-settings-button">
           <X />

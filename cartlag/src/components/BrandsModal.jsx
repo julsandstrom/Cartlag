@@ -1,10 +1,10 @@
-const Modal = ({ showModal, closeModal, brandMatches, part }) => {
+const Modal = ({ showModal, setShowModal, brandMatches, part }) => {
   if (!showModal) return null;
   return (
-    <div className="brand-modal-overlay" onClick={closeModal}>
-      <div className="brand-modal-content" onClick={closeModal}>
+    <div className="brand-modal-overlay" onClick={() => setShowModal(false)}>
+      <div className="brand-modal-content" onClick={() => setShowModal(false)}>
         <h2 className="recommend-title">
-          Recommended Brands and sizes for {part}
+          Recommended brands and sizes for: {part}
         </h2>
         {brandMatches.length > 0 ? (
           <ul className="brand-list-modal">

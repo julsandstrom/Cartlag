@@ -15,7 +15,7 @@ const ChangeName = ({ nameValue, setNameValue }) => {
       setNameValue(cleaned);
       setError("");
     } else {
-      setError("Max 15 letters allowed.");
+      setError("Max 14 letters allowed.");
     }
   };
 
@@ -50,11 +50,7 @@ const ChangeName = ({ nameValue, setNameValue }) => {
             className="new-profile-input "
           />
 
-          <button
-            style={{ backgroundColor: "#93ABD3", color: "white" }}
-            className="list-button"
-            onClick={(e) => saveName(e)}
-          >
+          <button className="list-button" onClick={(e) => saveName(e)}>
             Save Name
           </button>
         </form>

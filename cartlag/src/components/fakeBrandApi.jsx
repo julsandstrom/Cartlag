@@ -38,16 +38,13 @@ const fakeBrandAPI = async (measurement) => {
   };
   let matches = [];
 
-  // Loop through each brand
   for (const brand in brandSizing) {
     let foundSize = null;
 
-    // Loop through each body part the user has saved
     for (const part in measurement) {
       const userValue = measurement[part]?.value;
 
       if (userValue && brandSizing[brand][part]) {
-        // Find closest match by checking each size
         for (const size in brandSizing[brand][part]) {
           if (userValue <= brandSizing[brand][part][size]) {
             foundSize = size;

@@ -2,7 +2,7 @@ import CartlagDoll from "./CartlagDoll";
 import logotype from "../assets/logotype.svg";
 const SummaryModal = ({
   showModal,
-  closeModal,
+  setShowSummary,
   secondaryColor,
   selectedColor,
   nameValue,
@@ -18,13 +18,24 @@ const SummaryModal = ({
     }).format(today);
   };
 
+  const handleCloseModal = () => {
+    setShowSummary(false);
+    setTimeout(() => {
+      window.scrollBy(0, 1);
+      window.scrollBy(0, -1);
+    }, 5);
+  };
+
   return (
     <>
-      <div className="modal-overlay-summary" onClick={closeModal}>
+      <div className="modal-overlay-summary" onClick={handleCloseModal}>
         <div className="logotype-summary">
           <img src={logotype} alt="Cartlag Logo" className="logotype-card" />
         </div>{" "}
-        <h1 className="summary-name">{nameValue}</h1>
+        <div className="summary-name-date">
+          <h1 className="summary-name">{nameValue}</h1>
+          <p className="current-date">{getFormattedDate()}</p>
+        </div>
         <CartlagDoll
           className="cartlag-doll-summary"
           secondaryColor={secondaryColor}
@@ -36,11 +47,9 @@ const SummaryModal = ({
         >
           {children}
         </div>{" "}
-        <p className="current-date">{getFormattedDate()}</p>
       </div>
     </>
   );
 };
 
 export default SummaryModal;
-//move the logo down. name over the top. date under name

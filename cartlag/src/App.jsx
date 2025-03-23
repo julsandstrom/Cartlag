@@ -3,20 +3,20 @@ import "./App.css";
 import { useState, useEffect, useRef } from "react";
 import "@fontsource/jost/400.css";
 import "@fontsource/jost/700.css";
-
+import fakeBrandAPI from "./components/fakeBrandApi.jsx";
 import CartlagDoll from "./components/CartlagDoll";
 import SelectGreeting from "./components/SelectGreeting";
 import SelectedInput from "./components/SelectedInput";
-import mobileImg from "./assets/image-section-mobile.svg";
-import desktopImg from "./assets/image-section.svg";
+
 import html2canvas from "html2canvas";
 import DisplayData from "./components/DisplayData";
 import NameContainer from "./components/NameContainer";
-import Modal from "./components/Modal";
+
 import Navbar from "./components/Navbar";
 import chroma from "chroma-js";
 import SettingsModal from "./components/SettingsModal";
 import NewCategoryForm from "./components/NewCategoryForm";
+import BrandsModal from "./components/BrandsModal.jsx";
 
 const initialBodyParts = {
   Head: { value: "", unit: "cm" },
@@ -33,6 +33,9 @@ const initialBodyParts = {
 };
 
 function App() {
+  const [showModal, setShowModal] = useState(false);
+  const [closeModal, setCloseModal] = useState(false);
+  const [brandMatches, setBrandMatches] = useState([]);
   const [selectedPart, setSelectedPart] = useState(null);
   const [bodyParts, setBodyParts] = useState(initialBodyParts);
   const [inputValue, setInputValue] = useState("");
@@ -44,7 +47,7 @@ function App() {
 
   const [showPopup, setShowPopup] = useState(false);
   const [newCategory, setNewCategory] = useState("");
-  const [showModal, setShowModal] = useState(false);
+
   const [selectedColor, setSelectedColor] = useState("#d49769");
   const [secondaryColor, setSecondaryColor] = useState("#c29477");
   const [showSettings, setShowSettings] = useState(false);
@@ -57,7 +60,6 @@ function App() {
     setSecondaryColor(chroma(newColor).brighten(0.8).hex());
   };
 
-  const mobileImage = window.innerWidth > 650 ? desktopImg : mobileImg;
   const dollRef = useRef(null);
   const handleClick = (event) => {
     const part = event.target.id;
@@ -235,21 +237,27 @@ function App() {
       setSelectedColor(importedData.color);
       // setShowSummary(true);
 
-      // 🔥 Tiny Scroll Trick to Force Reflow
       setTimeout(() => {
-        window.scrollBy(0, 1); // Scroll down 1px
-        window.scrollBy(0, -1); // Scroll back up 1px
-      }, 50); // Delay to ensure state updates first
+        window.scrollBy(0, 1);
+        window.scrollBy(0, -1);
+      }, 50);
     };
     reader.readAsText(file);
   };
 
-  const handleInfoClick = () => {
-    setShowModal(true);
-  };
+  const findBrands = async (part, event = null, overrideValue = null) => {
+    if (event) event.stopPropagation();
 
-  const closeModal = () => {
-    setShowModal(false);
+    setSelectedPart(part);
+
+    const dataToSend = {
+      [part]: overrideValue || bodyParts[part],
+    };
+
+    const result = await fakeBrandAPI(dataToSend);
+    setBrandMatches(result);
+
+    setShowModal(true);
   };
 
   useEffect(() => {
@@ -301,58 +309,64 @@ function App() {
           handleDownload={handleDownload}
         />
       )}
-      <div className="page-layout">
-        <Modal
+      {showModal && (
+        <BrandsModal
           showModal={showModal}
-          closeModal={closeModal}
-          selectedPart={selectedPart}
+          setShowModal={setShowModal}
+          brandMatches={brandMatches}
+          part={selectedPart}
         />
+      )}
+      <div className="page-layout">
         <div className="nav-section">
           <Navbar handleSettingsClick={handleSettingsClick} />
         </div>
-
         {showPopup && (
           <div className="popup">
             <h3 className="popup-text">Measurements saved ✅</h3>
           </div>
         )}
         <NameContainer nameValue={nameValue} />
-        <>
+        <div className="selection-greeting-one">
+          <SelectGreeting
+            onSelectedPart={selectedPart}
+            showSummary={showSummary}
+            setShowSummary={setShowSummary}
+          />
+        </div>
+        {selectedPart && (
           <div className="selection-greeting">
-            <SelectGreeting
-              onSelectedPart={selectedPart}
-              showSummary={showSummary}
-              setShowSummary={setShowSummary}
-            />
-            {selectedPart && (
-              <>
-                <SelectedInput
-                  onSelectedPart={selectedPart}
-                  onInputValue={inputValue}
-                  onSetInputValue={setInputValue}
-                  onHandleSave={handleSave}
-                  handleDelete={handleDelete}
-                  onSelectedUnit={selectedUnit}
-                  inputMessage={inputMessage}
-                />
-              </>
-            )}
-          </div>{" "}
-          <NewCategoryForm
-            onhandleNewCategorySave={handleNewCategorySave}
-            newCategory={newCategory}
-            setNewCategory={setNewCategory}
-            setNewInputValue={setNewInputValue}
-            newInputValue={newInputValue}
-            onSelectedUnit={selectedUnit}
-            onSetSelectedUnit={setSelectedUnit}
-            formPosition={formPosition}
-            placeholderMessage={placeholderMessage}
-          />{" "}
-        </>
+            <>
+              <SelectedInput
+                showModal={showModal}
+                setShowModal={setShowModal}
+                onSelectedPart={selectedPart}
+                onInputValue={inputValue}
+                onSetInputValue={setInputValue}
+                onHandleSave={handleSave}
+                handleDelete={handleDelete}
+                onSelectedUnit={selectedUnit}
+                inputMessage={inputMessage}
+                findBrands={findBrands}
+              />
+            </>
+          </div>
+        )}
+        <NewCategoryForm
+          onhandleNewCategorySave={handleNewCategorySave}
+          newCategory={newCategory}
+          setNewCategory={setNewCategory}
+          setNewInputValue={setNewInputValue}
+          newInputValue={newInputValue}
+          onSelectedUnit={selectedUnit}
+          onSetSelectedUnit={setSelectedUnit}
+          formPosition={formPosition}
+          placeholderMessage={placeholderMessage}
+        />{" "}
         <div ref={dollRef} className="cartlag-wrapper">
           <DisplayData
             setSelectedPart={setSelectedPart}
+            setInputValue={setInputValue}
             bodyParts={bodyParts}
             handleClick={handleClick}
             selectedPart={selectedPart}
@@ -362,6 +376,10 @@ function App() {
             secondaryColor={secondaryColor}
             initialBodyParts={initialBodyParts}
             nameValue={nameValue}
+            setShowModal={setShowModal}
+            showModal={showModal}
+            setBrandMatches={setBrandMatches}
+            findBrands={findBrands}
           />
 
           <CartlagDoll
@@ -375,16 +393,15 @@ function App() {
       </div>{" "}
       <section className="message-section">
         <p className="message-text">
-          40% customers order more than they plan to keep
+          40% of returns are caused by wrong sizes.
         </p>
-        <p className="message-text-2">
-          84% of returned garments end up in a landfill or incinerator
-        </p>
+        <p className="message-text-2">Cartlag exists to change that.</p>
       </section>
       <div className="project-by-container">
         {" "}
         <span className="project-by">Project by</span>
         <h4>Julian Sandström</h4>
+        <a href="mailto:juliiansandstrom@gmail.com">Contact</a>
       </div>
     </>
   );

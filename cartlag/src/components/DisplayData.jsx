@@ -1,12 +1,11 @@
-import fakeBrandAPI from "./fakeBrandApi";
 import { useState, useEffect } from "react";
-import BrandsModal from "./BrandsModal.jsx";
+
 import SummaryModal from "./SummaryModal.jsx";
 
 const DisplayData = ({
   bodyParts,
+  setInputValue,
   handleClick,
-  setSelectedPart,
   selectedPart,
   showSummary,
   setShowSummary,
@@ -14,36 +13,10 @@ const DisplayData = ({
   selectedColor,
   initialBodyParts,
   nameValue,
+
+  findBrands,
 }) => {
-  const [showModal, setShowModal] = useState(false);
-  const [brandMatches, setBrandMatches] = useState([]);
   const [positions, setPositions] = useState({});
-
-  const findBrands = async (part, event) => {
-    event.stopPropagation();
-    handleClick({ target: { id: part } });
-    setSelectedPart(part);
-
-    const result = await fakeBrandAPI({ [part]: bodyParts[part] });
-    setBrandMatches(result);
-    setShowModal(!showModal);
-  };
-
-  useEffect(() => {
-    if (selectedPart) {
-      (async () => {
-        const result = await fakeBrandAPI({
-          [selectedPart]: bodyParts[selectedPart],
-        });
-        setBrandMatches(result);
-      })();
-    }
-  }, [selectedPart]);
-
-  const closeModal = () => {
-    setShowModal(false);
-    setSelectedPart(null);
-  };
 
   useEffect(() => {
     const updatePositions = () => {
@@ -94,7 +67,11 @@ const DisplayData = ({
                   left: positions[part]?.left || 0,
                   transform: "translate(-50%, -50%)",
                 }}
-                onClick={(e) => findBrands(part, e)}
+                onClick={(e) => {
+                  const clickedPart =
+                    e.target.getAttribute("data-part") || part;
+                  handleClick({ target: { id: clickedPart } });
+                }}
               >
                 {data.value} {data.unit}
               </span>
@@ -107,7 +84,7 @@ const DisplayData = ({
           showModal={showSummary}
           secondaryColor={secondaryColor}
           selectedColor={selectedColor}
-          closeModal={() => setShowSummary(false)}
+          setShowSummary={setShowSummary}
           nameValue={nameValue}
         >
           {Object.entries(bodyParts).filter(([_, data]) => data.value).length >
@@ -117,20 +94,26 @@ const DisplayData = ({
             <ul className="data-summary">
               {Object.entries(bodyParts)
                 .filter(([_, data]) => data.value)
-                .slice(0, 18)
+                .slice(0, 16)
                 .map(([part, data]) => (
                   <li
                     key={part}
                     className={`list-data ${
                       selectedPart === part ? "selected" : ""
                     }`}
-                    onClick={(e) => {
-                      if (!e.target.closest(".find-brand")) {
-                        handleClick({ target: { id: part } });
-                      }
-                    }}
                   >
-                    <span className="summary-parts">{part}</span>
+                    <span
+                      className="summary-parts"
+                      data-part={part}
+                      style={{ marginRight: "8px" }}
+                      onClick={(e) => {
+                        const clickedPart =
+                          e.target.getAttribute("data-part") || part;
+                        handleClick({ target: { id: clickedPart } });
+                      }}
+                    >
+                      {part}:
+                    </span>
                     {data.value}
                     {data.unit}
                   </li>
@@ -141,17 +124,23 @@ const DisplayData = ({
           )}
         </SummaryModal>
       )}
-
-      {showModal && selectedPart && (
-        <BrandsModal
-          showModal={showModal}
-          closeModal={closeModal}
-          brandMatches={brandMatches}
-          part={selectedPart}
-        />
-      )}
     </>
   );
 };
-
+{
+  // onClick={(e) => {
+  //   if (!e.target.closest(".find-brand")) {
+  //     const clickedPart =
+  //       e.target.getAttribute("data-part") || part;
+  //     handleClick({ target: { id: clickedPart } });
+  //   }
+  // }}
+  /* <span className="summary-parts">{part}:</span> */
+}
 export default DisplayData;
+// onClick={() =>
+//   findBrands(part, null, {
+//     value: data.unit,
+//     unit: data.value,
+//   })
+// }
