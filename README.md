@@ -1,6 +1,6 @@
 # Cartlag – Your Size. Your Data.
 <p align="center">
-  <img src="https://raw.githubusercontent.com/julsandstrom/cartlag/main/assets/cartlag-ph.png" alt="Cartlag logo" width="180" />
+  <img src="./src/assets/cartlag-ph.png" alt="Cartlag logo" width="180" />
 </p>
 
 
