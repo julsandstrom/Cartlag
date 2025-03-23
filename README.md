@@ -1,6 +1,6 @@
 # Cartlag – Your Size. Your Data.
 <p align="center">
-  <img src="./assets/cartlag-ph.svg" alt="Cartlag logo" width="180" />
+  <img src="./assets/cartlag-ph.png" alt="Cartlag logo" width="180" />
 </p>
 
 🌐 **Live Site**: [https://cartlag.com](https://cartlag.com)
