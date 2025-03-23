@@ -20,6 +20,13 @@ const SelectedInput = ({
     }
   }, [onSelectedPart]);
 
+  // const handleRender = () => {
+  //   setTimeout(() => {
+  //     window.scrollBy(0, 1);
+  //     window.scrollBy(0, -1);
+  //   }, 5);
+  // };
+
   useEffect(() => {
     if (!showModal || !onSelectedPart || !onInputValue) return;
 

@@ -2450,6 +2450,8 @@ h2 {
     font-size: 1.8rem;
     padding: 10px;
     text-align: center;
+    justify-self: center;
+    align-self: center;
     font-weight: 600;
     max-width: 800px;
     margin-bottom: 100px;
@@ -3136,7 +3138,7 @@ h2 {
     right: 0;
     top: 50%;
     transform: translateY(-50%);
-
+    left: 70%;
     height: 180px !important;
     width: 400px;
     padding: 10px;
@@ -3153,6 +3155,7 @@ h2 {
   .selection-greeting {
     position: fixed;
     right: 0;
+    left: 70%;
     top: 50%;
     transform: translateY(-50%);
 
