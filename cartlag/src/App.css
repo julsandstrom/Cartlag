@@ -103,9 +103,10 @@ input {
   gap: 100px;
 }
 .message-text {
-  max-width: 350px;
+  max-width: 400px;
   justify-self: center;
   align-self: center;
+
   font-size: 1.2rem;
   padding: 10px;
   text-align: center;
@@ -115,7 +116,7 @@ input {
 .message-text-2 {
   font-size: 1.2rem;
   padding: 10px;
-  max-width: 350px;
+  max-width: 400px;
   justify-self: center;
   align-self: center;
   text-align: center;
