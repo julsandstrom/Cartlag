@@ -136,7 +136,7 @@ input {
   grid-row: 1;
   grid-column: 1 / span 2 !important;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-top: 10px;
   padding: 0;
   margin-left: 20px;
@@ -146,6 +146,10 @@ input {
 }
 .logotype {
   margin-left: 0px;
+}
+.settings-btn {
+  align-self: flex-end;
+  margin-right: 20px;
 }
 
 .logo-text {
@@ -228,7 +232,7 @@ h6 {
 }
 
 .cartlag-doll {
-  width: 300px;
+  width: 250px;
 
   position: relative;
   z-index: 1;
@@ -591,7 +595,7 @@ small {
   align-self: flex-end;
   justify-self: flex-end;
   margin-right: 90px;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
   padding-left: 20px;
 }
 .cartlag-wrapper {
@@ -718,6 +722,7 @@ select {
   margin-left: 0px;
   padding: 0;
   display: flex;
+  display: none;
 }
 .hello-name {
   font-size: 1.5rem;
@@ -1286,6 +1291,7 @@ h2 {
     transform: scale(calc(100vw / 420));
   }
 }
+
 .logotype-summary {
   grid-row: 4;
   grid-column: 1;
@@ -1313,9 +1319,7 @@ h2 {
   height: 50px;
   margin-left: 10px;
 }
-.settings-btn {
-  align-self: flex-end;
-}
+
 .modal-content-summary {
   padding-top: 25px;
   grid-column: 2;
@@ -1352,6 +1356,12 @@ h2 {
   label,
   input {
     font-family: "Jost", sans-serif;
+  }
+  .name-container {
+    margin: 0px;
+    margin-left: 0px;
+    padding: 0;
+    display: flex;
   }
   .drag-handle {
     width: 60px;
@@ -2488,6 +2498,12 @@ h2 {
   label,
   input {
     font-family: "Jost", sans-serif;
+  }
+  .name-container {
+    margin: 0px;
+    margin-left: 0px;
+    padding: 0;
+    display: flex;
   }
   .message-text {
     font-size: 1.8rem;
