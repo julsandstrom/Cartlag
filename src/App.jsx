@@ -318,15 +318,26 @@ function App() {
         />
       )}
       <div className="page-layout">
-        <div className="nav-section">
-          <Navbar handleSettingsClick={handleSettingsClick} />
-        </div>
+        <NewCategoryForm
+          onhandleNewCategorySave={handleNewCategorySave}
+          newCategory={newCategory}
+          setNewCategory={setNewCategory}
+          setNewInputValue={setNewInputValue}
+          newInputValue={newInputValue}
+          onSelectedUnit={selectedUnit}
+          onSetSelectedUnit={setSelectedUnit}
+          formPosition={formPosition}
+          placeholderMessage={placeholderMessage}
+        />
+        <Navbar
+          handleSettingsClick={handleSettingsClick}
+          nameValue={nameValue}
+        />
         {showPopup && (
           <div className="popup">
             <h3 className="popup-text">Measurements saved ✅</h3>
           </div>
         )}
-        <NameContainer nameValue={nameValue} />
         <div className="selection-greeting-one">
           <SelectGreeting
             onSelectedPart={selectedPart}
@@ -351,18 +362,7 @@ function App() {
               />
             </>
           </div>
-        )}
-        <NewCategoryForm
-          onhandleNewCategorySave={handleNewCategorySave}
-          newCategory={newCategory}
-          setNewCategory={setNewCategory}
-          setNewInputValue={setNewInputValue}
-          newInputValue={newInputValue}
-          onSelectedUnit={selectedUnit}
-          onSetSelectedUnit={setSelectedUnit}
-          formPosition={formPosition}
-          placeholderMessage={placeholderMessage}
-        />{" "}
+        )}{" "}
         <div ref={dollRef} className="cartlag-wrapper">
           <DisplayData
             setSelectedPart={setSelectedPart}

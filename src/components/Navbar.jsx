@@ -1,17 +1,20 @@
 import { Settings } from "lucide-react";
 import logotype from "../assets/logotype.svg";
-
-const Navbar = ({ handleSettingsClick }) => {
+import NameContainer from "./NameContainer";
+const Navbar = ({ handleSettingsClick, nameValue }) => {
   const iconSize = window.innerWidth > 800 ? 70 : 44;
   return (
     <nav className="navbar">
       <div className="logotype">
         <img src={logotype} alt="Cartlag Logo" className="logo" />
       </div>
+      <NameContainer nameValue={nameValue} />
 
-      <div className="settings-button" onClick={handleSettingsClick}>
-        <Settings size={iconSize} />
-      </div>
+      <Settings
+        size={iconSize}
+        onClick={handleSettingsClick}
+        className="settings-btn"
+      />
     </nav>
   );
 };

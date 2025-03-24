@@ -13,11 +13,11 @@ const NewCategoryForm = ({
     <>
       <div
         className="new-category-section"
-        style={{
-          position: "absolute",
-          top: `${formPosition.top}px`,
-          left: `${formPosition.left}px`,
-        }}
+        // style={{
+        //   position: "absolute",
+        //   top: `${formPosition.top}px`,
+        //   left: `${formPosition.left}px`,
+        // }}
       >
         <form onSubmit={onhandleNewCategorySave} className="new-category-form">
           <label className="new-category-name">
