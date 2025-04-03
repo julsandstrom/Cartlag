@@ -32,7 +32,7 @@ const SelectGreeting = ({ onSelectedPart, showSummary, setShowSummary }) => {
                 Close
               </button>
             )}
-            <p className="select-text-alternative">or add a custom one</p>
+            {/* <p className="select-text-alternative">or add a custom one</p> */}
           </div>
         )}{" "}
       </label>
