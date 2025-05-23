@@ -8,6 +8,13 @@ const CartlagDoll = ({
   return (
     <svg
       onClick={handleClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleClick(e);
+        }
+      }}
+      role="button"
       id=""
       xmlns="http://www.w3.org/2000/svg"
       viewBox="-30 -40 420 760"
@@ -15,9 +22,103 @@ const CartlagDoll = ({
     >
       <defs>
         <style></style>
-      </defs>
+      </defs>{" "}
+      <path
+        id="Head"
+        tabIndex="0"
+        role="button"
+        aria-label="Head"
+        style={{
+          fill: selectedColor,
+          filter: "drop-shadow(0px 4px 10px rgba(0,0,0,0.25))",
+        }}
+        className={`cls-2 ${highlightedPart === "Head" ? "highlight" : ""}`}
+        d="M267.83,62.44c-9.95,29.82-23.19,51.33-49.13,43.23-25.28.44-33.14-22.89-31.78-55.33,1.06-25.46,10.8-44.71,40-41.5C262.19,12.71,277.78,32.62,267.83,62.44Z"
+      />{" "}
+      <path
+        id="Shoulder"
+        tabIndex="0"
+        role="button"
+        aria-label="Shoulder"
+        style={{ fill: secondaryColor }}
+        className={`cls-1 ${highlightedPart === "Shoulder" ? "highlight" : ""}`}
+        d="M315.91,145.5c0,9.37-10.93,17-24.41,17s-24.42-7.59-24.42-17,10.93-17,24.42-17S315.91,136.13,315.91,145.5Z"
+      />{" "}
+      <path
+        id="Arms"
+        tabIndex="0"
+        role="button"
+        aria-label="Arms"
+        style={{
+          fill: selectedColor,
+          filter: "drop-shadow(0px 4px 10px rgba(0,0,0,0.25))",
+        }}
+        data-name="arms"
+        className={`cls-2 ${highlightedPart === "Arms" ? "highlight" : ""}`}
+        d="M276.23,162.47a6.55,6.55,0,0,1,5.63-7.36c.22,0,.44,0,.66-.05l30-1a7,7,0,0,1,7.24,6.75,4.34,4.34,0,0,1,0,.51l-.3,7.24.84,34.56,1.15,19.42.55,27.92a6.53,6.53,0,0,1-6.34,6.69l-20.58.72a7,7,0,0,1-7.2-6.22l-3.15-27.82-3-20.37-4.49-32.94Z"
+      />
+      <path
+        id="Hands"
+        tabIndex="0"
+        role="button"
+        aria-label="Hands"
+        style={{ fill: selectedColor }}
+        data-name="hands"
+        className={`cls-2 ${highlightedPart === "Hands" ? "highlight" : ""}`}
+        d="M3.46,50.54a6.55,6.55,0,0,0,7.43,5.51l.27,0,15.68-2.88a7,7,0,0,0,5.64-7.93l-3.37-22a6.55,6.55,0,0,0-7.44-5.52l-.26,0L5.72,20.57A7,7,0,0,0,.08,28.5Z"
+      />{" "}
+      <path
+        id="Chest"
+        tabIndex="0"
+        role="button"
+        aria-label="Chest"
+        style={{
+          fill: selectedColor,
+          filter: "drop-shadow(0px 4px 10px rgba(0,0,0,0.25))",
+        }}
+        className={`cls-2 ${highlightedPart === "Chest" ? "highlight" : ""}`}
+        d="M161.18,146.94a20.84,20.84,0,0,1,20.4-25.18h72.63a23.1,23.1,0,0,1,22.71,27.33l-2,46.74a28.36,28.36,0,0,0,.51,6.63,27.84,27.84,0,0,1-27.31,33.25H190.5a29.6,29.6,0,0,1-29.6-29.58,30.16,30.16,0,0,1,.37-4.65,30,30,0,0,0,.37-4.64V151.27A21,21,0,0,0,161.18,146.94Z"
+      />{" "}
+      <path
+        id="Waist"
+        tabIndex="0"
+        role="button"
+        aria-label="Waist"
+        style={{ fill: secondaryColor }}
+        className={`cls-1 ${highlightedPart === "Waist" ? "highlight" : ""}`}
+        d="M268.43,248.6c0,14.61-21,26.46-46.8,26.46s-46.8-11.85-46.8-26.46,20.95-26.45,46.8-26.45S268.43,234,268.43,248.6Z"
+      />{" "}
+      <path
+        id="Hip"
+        tabIndex="0"
+        role="button"
+        aria-label="Hip"
+        style={{
+          fill: selectedColor,
+          filter: "drop-shadow(0px 4px 10px rgba(0,0,0,0.25))",
+        }}
+        data-name="hip"
+        className={`cls-2 ${highlightedPart === "Hip" ? "highlight" : ""}`}
+        d="M170.14,271.25a24.34,24.34,0,0,1,21.2-11.87l61.93.91a25.59,25.59,0,0,1,24.79,20.84l.14.71,1.9,29.07a21.62,21.62,0,0,1-21.24,25.49H182.37A18.31,18.31,0,0,1,164,318.14a19,19,0,0,1,.24-3,17.88,17.88,0,0,0,.24-2.92V299.84l2.42-19.22A24.28,24.28,0,0,1,170.14,271.25Z"
+      />{" "}
+      <path
+        id="Legs"
+        tabIndex="0"
+        role="button"
+        aria-label="Legs"
+        style={{
+          fill: selectedColor,
+          filter: "drop-shadow(0px 4px 10px rgba(0,0,0,0.25))",
+        }}
+        data-name="lower legs"
+        className={`cls-2 ${highlightedPart === "Legs" ? "highlight" : ""}`}
+        d="M208.92,497.67a7.1,7.1,0,0,0-6.92-5.75H170.41a6.49,6.49,0,0,0-6.54,6.15l-.82,14.61-1,20.77,2.11,22.15,2.49,28.76,3,22.39v13.13a7.07,7.07,0,0,0,7,7h23a6.5,6.5,0,0,0,6.54-6.2l2-39.64,1.55-28.91v-49.2a6.75,6.75,0,0,0-.12-1.27Z"
+      />{" "}
       <path
         id="Feet"
+        tabIndex="0"
+        role="button"
+        aria-label="Feet"
         style={{
           fill: selectedColor,
           filter: "drop-shadow(0px 4px 10px rgba(0,0,0,0.25))",
@@ -34,7 +135,7 @@ const CartlagDoll = ({
         data-name="feet"
         className={`cls-2 ${highlightedPart === "Feet" ? "highlight" : ""}`}
         d="M202.14,688.71c-10.76.67-26.35-10.57-32.33-27.05s4.75-25.79,9.51-31.15c12.86-6.47,20.23,12.31,28.3,28C220.52,676.1,212.89,688,202.14,688.71Z"
-      />
+      />{" "}
       <path
         id="Legs"
         style={{ fill: secondaryColor }}
@@ -65,27 +166,6 @@ const CartlagDoll = ({
         d="M276.57,345.6c0,9.74-10.63,17.63-23.74,17.63s-23.74-7.89-23.74-17.63S239.72,328,252.83,328,276.57,335.86,276.57,345.6Z"
       />
       <path
-        id="Waist"
-        style={{ fill: secondaryColor }}
-        className={`cls-1 ${highlightedPart === "Waist" ? "highlight" : ""}`}
-        d="M268.43,248.6c0,14.61-21,26.46-46.8,26.46s-46.8-11.85-46.8-26.46,20.95-26.45,46.8-26.45S268.43,234,268.43,248.6Z"
-      />
-      <path
-        id="Head"
-        style={{
-          fill: selectedColor,
-          filter: "drop-shadow(0px 4px 10px rgba(0,0,0,0.25))",
-        }}
-        className={`cls-2 ${highlightedPart === "Head" ? "highlight" : ""}`}
-        d="M267.83,62.44c-9.95,29.82-23.19,51.33-49.13,43.23-25.28.44-33.14-22.89-31.78-55.33,1.06-25.46,10.8-44.71,40-41.5C262.19,12.71,277.78,32.62,267.83,62.44Z"
-      />{" "}
-      <path
-        id="Shoulder"
-        style={{ fill: secondaryColor }}
-        className={`cls-1 ${highlightedPart === "Shoulder" ? "highlight" : ""}`}
-        d="M315.91,145.5c0,9.37-10.93,17-24.41,17s-24.42-7.59-24.42-17,10.93-17,24.42-17S315.91,136.13,315.91,145.5Z"
-      />
-      <path
         id="Shoulder"
         style={{ fill: secondaryColor }}
         data-name="none"
@@ -97,25 +177,6 @@ const CartlagDoll = ({
         style={{ fill: secondaryColor }}
         className={`cls-1 ${highlightedPart === "Neck" ? "highlight" : ""}`}
         d="M191.11,109.55a6.77,6.77,0,0,1,6.76-6.78h42.07a6.79,6.79,0,0,1,6.79,6.77h0V115a6.79,6.79,0,0,1-6.79,6.78H197.89a6.79,6.79,0,0,1-6.78-6.78Z"
-      />
-      <path
-        id="Chest"
-        style={{
-          fill: selectedColor,
-          filter: "drop-shadow(0px 4px 10px rgba(0,0,0,0.25))",
-        }}
-        className={`cls-2 ${highlightedPart === "Chest" ? "highlight" : ""}`}
-        d="M161.18,146.94a20.84,20.84,0,0,1,20.4-25.18h72.63a23.1,23.1,0,0,1,22.71,27.33l-2,46.74a28.36,28.36,0,0,0,.51,6.63,27.84,27.84,0,0,1-27.31,33.25H190.5a29.6,29.6,0,0,1-29.6-29.58,30.16,30.16,0,0,1,.37-4.65,30,30,0,0,0,.37-4.64V151.27A21,21,0,0,0,161.18,146.94Z"
-      />
-      <path
-        id="Hip"
-        style={{
-          fill: selectedColor,
-          filter: "drop-shadow(0px 4px 10px rgba(0,0,0,0.25))",
-        }}
-        data-name="hip"
-        className={`cls-2 ${highlightedPart === "Hip" ? "highlight" : ""}`}
-        d="M170.14,271.25a24.34,24.34,0,0,1,21.2-11.87l61.93.91a25.59,25.59,0,0,1,24.79,20.84l.14.71,1.9,29.07a21.62,21.62,0,0,1-21.24,25.49H182.37A18.31,18.31,0,0,1,164,318.14a19,19,0,0,1,.24-3,17.88,17.88,0,0,0,.24-2.92V299.84l2.42-19.22A24.28,24.28,0,0,1,170.14,271.25Z"
       />
       <path
         id="Arms"
@@ -167,13 +228,6 @@ const CartlagDoll = ({
       />{" "}
       <path
         id="Hands"
-        style={{ fill: selectedColor }}
-        data-name="hands"
-        className={`cls-2 ${highlightedPart === "Hands" ? "highlight" : ""}`}
-        d="M3.46,50.54a6.55,6.55,0,0,0,7.43,5.51l.27,0,15.68-2.88a7,7,0,0,0,5.64-7.93l-3.37-22a6.55,6.55,0,0,0-7.44-5.52l-.26,0L5.72,20.57A7,7,0,0,0,.08,28.5Z"
-      />
-      <path
-        id="Hands"
         style={{
           fill: selectedColor,
           filter: "drop-shadow(0px 4px 10px rgba(0,0,0,0.25))",
@@ -194,26 +248,6 @@ const CartlagDoll = ({
         style={{ fill: secondaryColor }}
         className={`cls-1 ${highlightedPart === "Hands" ? "highlight" : ""}`}
         d="M2.65,22,25,18.12,22.46,0,.13,3.88Z"
-      />
-      <path
-        id="Arms"
-        style={{
-          fill: selectedColor,
-          filter: "drop-shadow(0px 4px 10px rgba(0,0,0,0.25))",
-        }}
-        data-name="arms"
-        className={`cls-2 ${highlightedPart === "Arms" ? "highlight" : ""}`}
-        d="M276.23,162.47a6.55,6.55,0,0,1,5.63-7.36c.22,0,.44,0,.66-.05l30-1a7,7,0,0,1,7.24,6.75,4.34,4.34,0,0,1,0,.51l-.3,7.24.84,34.56,1.15,19.42.55,27.92a6.53,6.53,0,0,1-6.34,6.69l-20.58.72a7,7,0,0,1-7.2-6.22l-3.15-27.82-3-20.37-4.49-32.94Z"
-      />
-      <path
-        id="Legs"
-        style={{
-          fill: selectedColor,
-          filter: "drop-shadow(0px 4px 10px rgba(0,0,0,0.25))",
-        }}
-        data-name="lower legs"
-        className={`cls-2 ${highlightedPart === "Legs" ? "highlight" : ""}`}
-        d="M208.92,497.67a7.1,7.1,0,0,0-6.92-5.75H170.41a6.49,6.49,0,0,0-6.54,6.15l-.82,14.61-1,20.77,2.11,22.15,2.49,28.76,3,22.39v13.13a7.07,7.07,0,0,0,7,7h23a6.5,6.5,0,0,0,6.54-6.2l2-39.64,1.55-28.91v-49.2a6.75,6.75,0,0,0-.12-1.27Z"
       />
       <path
         id="Legs"

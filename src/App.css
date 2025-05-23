@@ -329,6 +329,26 @@ input {
   transition: all 0.5s ease-in-out;
 }
 
+#Head:focus,
+#Chest:focus,
+#Neck:focus,
+#Waist:focus,
+#Hip:focus,
+#Arms:focus,
+#Hands:focus,
+#Wrists:focus,
+#Legs:focus,
+#Thigh:focus,
+#Feet:focus,
+#Shoulder:focus {
+  pointer-events: all;
+  filter: drop-shadow(0px 10px 6px rgba(255, 255, 255, 0.8))
+    drop-shadow(0px 10px 12px rgba(255, 255, 255, 0.5));
+  stroke: rgb(255, 255, 255);
+  stroke-width: 4px;
+  transition: all 0.5s ease-in-out;
+}
+
 .instruction-2 {
   margin-left: 300px;
   margin-top: 100px;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const SelectedInput = ({
   onSelectedPart,
@@ -12,20 +12,18 @@ const SelectedInput = ({
   setShowModal,
 }) => {
   const [sliderValue, setSliderValue] = useState(Number(onInputValue) || 100);
-
+  const sliderRef = useRef(null);
+  useEffect(() => {
+    if (sliderRef.current) {
+      sliderRef.current.focus();
+    }
+  }, [onSelectedPart]);
   useEffect(() => {
     const incomingValue = Number(onInputValue);
     if (!isNaN(incomingValue)) {
       setSliderValue(incomingValue);
     }
   }, [onSelectedPart]);
-
-  // const handleRender = () => {
-  //   setTimeout(() => {
-  //     window.scrollBy(0, 1);
-  //     window.scrollBy(0, -1);
-  //   }, 5);
-  // };
 
   useEffect(() => {
     if (!showModal || !onSelectedPart || !onInputValue) return;
@@ -53,17 +51,21 @@ const SelectedInput = ({
           {" "}
           <div className="part-value-wrap">
             <label className="selected-part">{onSelectedPart}</label>
-            <div className="slider-value-display">
-              {sliderValue} {onSelectedUnit}
-            </div>
+            <div className="slider-value-display"></div>
           </div>
+          <label htmlFor="slider-id"></label>
           <input
             type="range"
+            ref={sliderRef}
             min={1}
             max={250}
             value={sliderValue}
             onChange={handleSliderChange}
             className="slider"
+            aria-valuemin={1}
+            aria-valuemax={250}
+            aria-valuenow={sliderValue}
+            aria-label={`Adjust ${onSelectedPart} measurement in ${onSelectedUnit}`}
           />{" "}
         </div>
       </div>
