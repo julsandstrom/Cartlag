@@ -51,7 +51,10 @@ const SelectedInput = ({
           {" "}
           <div className="part-value-wrap">
             <label className="selected-part">{onSelectedPart}</label>
-            <div className="slider-value-display"></div>
+            <div className="slider-value-display">
+              {" "}
+              {onInputValue} {onSelectedUnit}
+            </div>
           </div>
           <label htmlFor="slider-id"></label>
           <input
