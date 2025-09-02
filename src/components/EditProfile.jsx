@@ -1,7 +1,6 @@
 import ChangeName from "./ChangeName";
 import { HexColorPicker } from "react-colorful";
-import { Palette } from "lucide-react";
-import { Trash2 } from "lucide-react";
+
 const EditProfile = ({
   changingColor,
   selectedColor,
@@ -30,7 +29,6 @@ const EditProfile = ({
                 onClick={() => setChangingColor(true)}
                 className="list-button"
               >
-                <Palette />
                 Change Color
               </button>
             ) : (
@@ -54,7 +52,6 @@ const EditProfile = ({
               onClick={() => setShowConfirm(!showConfirm)}
               className="list-button"
             >
-              <Trash2 />
               Delete Profile
             </button>
           </div>

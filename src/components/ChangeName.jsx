@@ -35,7 +35,6 @@ const ChangeName = ({ nameValue, setNameValue }) => {
       {!isEditingName ? (
         <div className="list-button-container no-drag">
           <button className="list-button" onClick={handleNameEdit}>
-            <Pen />
             Change Name
           </button>
         </div>

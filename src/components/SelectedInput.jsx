@@ -78,7 +78,7 @@ const SelectedInput = ({
           save
         </button>
 
-        {!showModal ? (
+        {/* {!showModal ? (
           <button
             className="recommend-button"
             onClick={() =>
@@ -97,7 +97,7 @@ const SelectedInput = ({
           >
             close
           </button>
-        )}
+        )} */}
 
         <button onClick={handleDelete} className="delete-button">
           delete

@@ -99,7 +99,10 @@ function SettingsModal({
         ) : (
           <div className="drag-handle" />
         )}
-        <button onClick={closeSettings} className="close-settings-button">
+        <button
+          onClick={closeSettings}
+          className="close-settings-button text-white"
+        >
           <X />
         </button>
       </div>

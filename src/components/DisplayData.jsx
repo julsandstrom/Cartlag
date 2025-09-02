@@ -127,20 +127,5 @@ const DisplayData = ({
     </>
   );
 };
-{
-  // onClick={(e) => {
-  //   if (!e.target.closest(".find-brand")) {
-  //     const clickedPart =
-  //       e.target.getAttribute("data-part") || part;
-  //     handleClick({ target: { id: clickedPart } });
-  //   }
-  // }}
-  /* <span className="summary-parts">{part}:</span> */
-}
+
 export default DisplayData;
-// onClick={() =>
-//   findBrands(part, null, {
-//     value: data.unit,
-//     unit: data.value,
-//   })
-// }

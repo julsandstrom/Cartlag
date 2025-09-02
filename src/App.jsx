@@ -17,6 +17,7 @@ import chroma from "chroma-js";
 import SettingsModal from "./components/SettingsModal";
 import NewCategoryForm from "./components/NewCategoryForm";
 import BrandsModal from "./components/BrandsModal.jsx";
+import AISearch from "./components/AISearch.jsx";
 
 const initialBodyParts = {
   Head: { value: "", unit: "cm" },
@@ -42,6 +43,7 @@ function App() {
   const [newInputValue, setNewInputValue] = useState("");
   const [selectedUnit, setSelectedUnit] = useState("mm");
   const [highlightedPart, setHighlightedPart] = useState(null);
+  const [showAI, setShowAI] = useState(false);
 
   const [nameValue, setNameValue] = useState("Guest");
 
@@ -60,6 +62,8 @@ function App() {
     setSecondaryColor(chroma(newColor).brighten(0.8).hex());
   };
 
+  const partNames = Object.keys(bodyParts);
+  const [selected, setSelected] = useState(partNames[0] ?? "");
   const dollRef = useRef(null);
   const handleClick = (event) => {
     const part = event.target.id;
@@ -317,8 +321,8 @@ function App() {
           part={selectedPart}
         />
       )}
-      <div className="page-layout">
-        <NewCategoryForm
+      <div className=" flex flex-col gap-5 items-center justify-start ">
+        {/* <NewCategoryForm
           onhandleNewCategorySave={handleNewCategorySave}
           newCategory={newCategory}
           setNewCategory={setNewCategory}
@@ -328,14 +332,31 @@ function App() {
           onSetSelectedUnit={setSelectedUnit}
           formPosition={formPosition}
           placeholderMessage={placeholderMessage}
-        />
+        /> */}
         <Navbar
           handleSettingsClick={handleSettingsClick}
           nameValue={nameValue}
         />
+        <div className="flex justify-center">
+          <NameContainer nameValue={nameValue} />
+        </div>
+        <div className="flex flex-col">
+          {!selectedPart && (
+            <h2 className="text-2xl md:text-4xl xl:text-5xl">
+              Select a <span className="font-semibold">body part</span> below
+            </h2>
+          )}
+          {selectedPart && (
+            <h2 className="text-2xl md:text-4xl xl:text-5xl">
+              <span className="font-semibold">Add</span> your measurement
+            </h2>
+          )}
+        </div>
         {showPopup && (
-          <div className="popup">
-            <h3 className="popup-text">Measurements saved ✅</h3>
+          <div className="popup ">
+            <h3 className="p-2 bg-white text-[#545454] rounded-xl">
+              Perfect! ✅
+            </h3>
           </div>
         )}
         <div className="selection-greeting-one">
@@ -390,18 +411,49 @@ function App() {
             secondaryColor={secondaryColor}
           />
         </div>
+        {!showAI ? (
+          <button
+            className="bg-[#F5F5F5] text-[#232121] px-5 py-2 rounded-xl md:text-xl"
+            onClick={() => setShowAI(true)}
+          >
+            Find your size with AI
+          </button>
+        ) : (
+          <>
+            <AISearch
+              selected={selected}
+              setSelected={setSelected}
+              partNames={partNames}
+            />
+            <button
+              className="bg-[#fd6a6a] text-[#232121] px-5 py-2 rounded-xl md:text-xl"
+              onClick={() => setShowAI(false)}
+            >
+              Close AI helper
+            </button>
+          </>
+        )}
       </div>{" "}
-      <section className="message-section">
-        <p className="message-text">
-          40% of returns are caused by wrong sizes.
+      <section className="flex flex-col items-center gap-11 mt-20 lg:gap-20 2xl:gap-40 2xl:mt-44">
+        <p className="text-[#F5F5F5] text-xl md:text-4xl xl:text-5xl ">
+          40% of returns are caused by <span className="font-bold">wrong</span>{" "}
+          sizes.
         </p>
-        <p className="message-text-2">Cartlag exists to change that.</p>
+        <p className="text-[#F5F5F5] text-base md:text-2xl xl:text-4xl ">
+          Cartlag exists to change that.
+        </p>
       </section>
-      <div className="project-by-container">
+      <div className="project-by-container pt-20 lg:p-40">
         {" "}
-        <span className="project-by">Project by</span>
-        <h4>Julian Sandström</h4>
-        <a href="mailto:juliiansandstrom@gmail.com">Contact</a>
+        <span className="text-[#F5F5F5] font-bold text-base md:text-2xl xl:text-4xl">
+          Project by
+        </span>
+        <h4 className="text-[#F5F5F5]  text-base md:text-2xl xl:text-4xl">
+          Julian Sandström
+        </h4>
+        {/* <a href="mailto:juliiansandstrom@gmail.com" className="text-[#545454]">
+          Contact
+        </a> */}
       </div>
     </>
   );
