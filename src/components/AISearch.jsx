@@ -1,7 +1,36 @@
 import { useState, useMemo } from "react";
 
 const allowedSizes = ["XS", "S", "M", "L", "XL", "XXL"];
-
+const BRANDS = [
+  "Nike",
+  "Adidas",
+  "Puma",
+  "Under Armour",
+  "New Balance",
+  "Reebok",
+  "Asics",
+  "H&M",
+  "Zara",
+  "Uniqlo",
+  "Levi's",
+  "Gap",
+  "Patagonia",
+  "The North Face",
+  "Columbia",
+  "Carhartt",
+  "Arcteryx",
+  "COS",
+  "Everlane",
+  "Lululemon",
+  "Gymshark",
+  "Bershka",
+  "Pull&Bear",
+  "Monki",
+  "Weekday",
+  "Peak Performance",
+  "Gant",
+  "Filippa K",
+];
 const AISearch = ({ selected, setSelected, partNames }) => {
   const [valueCm, setValueCm] = useState(90);
   const [brand, setBrand] = useState("");
@@ -20,15 +49,9 @@ const AISearch = ({ selected, setSelected, partNames }) => {
 
   async function onSubmit(e) {
     e.preventDefault();
+    setResult("");
     setErr("");
     setLoading(true);
-
-    const cached = sessionStorage.getItem(cacheKey);
-    if (cached) {
-      setResult(cached);
-      setLoading(false);
-      return;
-    }
 
     try {
       const res = await fetch("/.netlify/functions/ai-size", {
@@ -43,6 +66,11 @@ const AISearch = ({ selected, setSelected, partNames }) => {
       });
       const data = await res.json();
       const size = data?.size ?? "X";
+      if (size === "X") {
+        console.log("error. stop");
+        setErr("AI is unavailable right now.");
+        return;
+      }
       sessionStorage.setItem(cacheKey, size);
       setResult(size);
     } catch (e) {
@@ -54,14 +82,14 @@ const AISearch = ({ selected, setSelected, partNames }) => {
   }
 
   return (
-    <section className="flex flex-col items-center gap-3 border  py-5 px-8 rounded-xl">
+    <section className="flex flex-col items-center gap-5 lg:gap-9 border border-yellow-900  py-5 px-11 rounded-xl">
       <h3 className="font-semibold text-xl md:text-2xl">
         Find your size with AI
       </h3>
 
       <form
         onSubmit={onSubmit}
-        className="flex flex-col items-center gap-5 w-full"
+        className="flex flex-col items-center gap-6 md:gap-11 lg:gap-12  w-full"
       >
         <label className="flex items-center gap-2  md:text-xl">
           <span>Body part</span>
@@ -92,8 +120,21 @@ const AISearch = ({ selected, setSelected, partNames }) => {
             className="max-w-[260px]"
           />
         </label>
-
-        <label className="flex items-center gap-2 mb-5 md:text-xl">
+        <label className="flex items-center gap-2  md:text-xl">
+          <span>Brand</span>
+          <select
+            value={brand}
+            onChange={(e) => setBrand(e.target.value)}
+            className="rounded-md border px-2 w-52 py-1 bg-white text-[#232121] md:text-xl"
+          >
+            {BRANDS.map((name) => (
+              <option key={name} value={name} className="w-20">
+                {name}
+              </option>
+            ))}
+          </select>
+        </label>
+        {/* <label className="flex items-center gap-2 mb-5 md:text-xl">
           <span>Brand</span>
           <input
             type="text"
@@ -102,7 +143,7 @@ const AISearch = ({ selected, setSelected, partNames }) => {
             onChange={(e) => setBrand(e.target.value)}
             className="rounded-md border px-2 py-1 md:text-xl md:py-5"
           />
-        </label>
+        </label> */}
 
         <button
           className={`inline-flex items-center justify-center
@@ -121,10 +162,13 @@ const AISearch = ({ selected, setSelected, partNames }) => {
 
       <div className="min-h-6">
         {err && <p className="text-red-600">{err}</p>}
-        {!err && result && (
-          <p>
-            Recommended size: <b>{result}</b>
-          </p>
+        {!err && result && result !== "X" && (
+          <div className="flex flex-col justify-center items-center py-5 md:text-xl">
+            <p>{brand}</p>
+            <p>
+              Recommended size: <b>{result}</b>
+            </p>
+          </div>
         )}
       </div>
     </section>

@@ -129,7 +129,7 @@ function SettingsModal({
                 Edit Profile
               </button>
             </div>
-            <div
+            {/* <div
               className="import-profile-container no-drag"
               onClick={() => document.querySelector(".import-json").click()}
             >
@@ -146,7 +146,7 @@ function SettingsModal({
               <button onClick={handleDownload} className="list-button">
                 Download Profile
               </button>
-            </div>
+            </div> */}
           </>
         )}
 

@@ -203,6 +203,8 @@ function App() {
       if (cardRef) {
         const canvas = await html2canvas(cardRef, {
           backgroundColor: "#242424",
+          useCORS: true,
+          scale: 2,
         });
         const imgData = canvas.toDataURL("image/png");
         const link = document.createElement("a");
@@ -225,7 +227,7 @@ function App() {
       jsonLink.href = URL.createObjectURL(jsonBlob);
       jsonLink.download = `${nameValue}_Cartlag_Profile.json`;
       jsonLink.click();
-    }, 300);
+    }, 800);
   };
 
   const handleImport = (e) => {
@@ -239,7 +241,7 @@ function App() {
       setNameValue(importedData.name);
       setSecondaryColor(importedData.secondaryColor);
       setSelectedColor(importedData.color);
-      // setShowSummary(true);
+      setShowSummary(true);
 
       setTimeout(() => {
         window.scrollBy(0, 1);
@@ -359,13 +361,13 @@ function App() {
             </h3>
           </div>
         )}
-        <div className="selection-greeting-one">
+        {/* <div className="selection-greeting-one">
           <SelectGreeting
             onSelectedPart={selectedPart}
             showSummary={showSummary}
             setShowSummary={setShowSummary}
           />
-        </div>
+        </div> */}
         {selectedPart && (
           <div className="selection-greeting">
             <>
@@ -413,7 +415,7 @@ function App() {
         </div>
         {!showAI ? (
           <button
-            className="bg-[#F5F5F5] text-[#232121] px-5 py-2 rounded-xl md:text-xl"
+            className="bg-[#F5F5F5] text-[#232121] px-5 py-2 rounded-xl md:text-xl lg:text-3xl"
             onClick={() => setShowAI(true)}
           >
             Find your size with AI
@@ -434,14 +436,57 @@ function App() {
           </>
         )}
       </div>{" "}
-      <section className="flex flex-col items-center gap-11 mt-20 lg:gap-20 2xl:gap-40 2xl:mt-44">
-        <p className="text-[#F5F5F5] text-xl md:text-4xl xl:text-5xl ">
-          40% of returns are caused by <span className="font-bold">wrong</span>{" "}
-          sizes.
+      <section className="flex flex-col font-serif items-center gap-5 my-20 md:my-40 md:gap-16 lg:gap-20 2xl:gap-32 2xl:mt-44">
+        <p className="text-[#F5F5F5] text-2xl  md:text-6xl xl:text-5xl ">
+          40% of returns
         </p>
-        <p className="text-[#F5F5F5] text-base md:text-2xl xl:text-4xl ">
-          Cartlag exists to change that.
+        <p className="text-xl md:text-2xl">
+          happen because clothes don’t <span className="font-bold">fit.</span>
         </p>
+        <p className="text-[#F5F5F5] text-xs font-serif md:text-xl xl:text-4xl ">
+          Cartlag makes sizing simple.
+        </p>
+      </section>
+      <section className="flex justify-center ">
+        <div className="flex flex-col gap-3 md:gap-10 border border-yellow-900 rounded-xl items-center justify-center p-11 max-w-[350px] md:max-w-[600px] xl:max-w-[1000px] ">
+          <p className="text-xl md:text-4xl mb-3 xl:text-6xl">
+            Here is your digital card
+          </p>
+          <button
+            className="bg-[#F5F5F5] text-[#232121] px-5 py-2 rounded-xl md:text-2xl xl:text-4xl"
+            onClick={() => setShowSummary(!showSummary)}
+          >
+            Open
+          </button>
+          <div className="flex flex-col gap-3 justify-center items-center">
+            <p className="mt-11 md:text-2xl xl:text-4xl">Download & Share</p>
+            <button
+              className="bg-[#F5F5F5] text-[#232121] px-5 py-2 rounded-xl md:text-2xl xl:text-4xl"
+              onClick={handleDownload}
+            >
+              Download
+            </button>
+          </div>
+          <div className="flex flex-col gap-3 justify-center items-center">
+            <p className="mt-11 md:text-2xl xl:text-4xl">Import & Edit</p>
+            <div
+              className="import-profile-container no-drag"
+              onClick={() => document.querySelector(".import-json").click()}
+            >
+              <button className="bg-[#F5F5F5] text-[#232121] px-5 py-2 rounded-xl md:text-2xl xl:text-4xl">
+                Import
+              </button>
+
+              <input
+                type="file"
+                accept="application/json"
+                placeholder="Import"
+                onChange={handleImport}
+                className="import-json"
+              />
+            </div>
+          </div>
+        </div>
       </section>
       <div className="project-by-container pt-20 lg:p-40">
         {" "}
@@ -451,9 +496,6 @@ function App() {
         <h4 className="text-[#F5F5F5]  text-base md:text-2xl xl:text-4xl">
           Julian Sandström
         </h4>
-        {/* <a href="mailto:juliiansandstrom@gmail.com" className="text-[#545454]">
-          Contact
-        </a> */}
       </div>
     </>
   );

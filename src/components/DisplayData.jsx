@@ -86,6 +86,7 @@ const DisplayData = ({
           selectedColor={selectedColor}
           setShowSummary={setShowSummary}
           nameValue={nameValue}
+          showSummary={showSummary}
         >
           {Object.entries(bodyParts).filter(([_, data]) => data.value).length >
             18 && <p className="limit-message">Max data reached. Well done!</p>}
@@ -98,7 +99,7 @@ const DisplayData = ({
                 .map(([part, data]) => (
                   <li
                     key={part}
-                    className={`list-data ${
+                    className={`list-data  ${
                       selectedPart === part ? "selected" : ""
                     }`}
                   >

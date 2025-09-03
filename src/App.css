@@ -279,6 +279,9 @@ h6 {
 
 .summary-parts {
   margin-right: 15px;
+  font-size: 1.2rem;
+  padding-bottom: 5px;
+
   color: #edeae4;
   font-weight: normal;
   border-radius: 5px;
@@ -447,12 +450,13 @@ select {
 
   color: #edeae4;
   display: grid;
-  grid-template-columns: 100px 80px;
-  font-size: 1rem;
-
+  grid-template-columns: 90px 80px;
+  font-size: 1.2rem;
+  align-items: center;
   border-radius: 5px;
   background-color: none;
   padding: 0;
+  margin-bottom: 5px;
 }
 
 .list-data:hover {
@@ -1278,11 +1282,12 @@ h2 {
 .modal-wrapper {
   position: fixed;
   inset: 0;
+  bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem; /* ensures it doesn't hug screen edge */
-  background: rgba(0, 0, 0, 0.4); /* optional dim */
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.4);
   z-index: 999;
 }
 .modal-overlay-summary {

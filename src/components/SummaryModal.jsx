@@ -6,6 +6,7 @@ const SummaryModal = ({
   secondaryColor,
   selectedColor,
   nameValue,
+  showSummary,
   children,
 }) => {
   if (!showModal) return null;
@@ -43,11 +44,17 @@ const SummaryModal = ({
             selectedColor={selectedColor}
           />
           <div
-            className="modal-content-summary"
+            className="modal-content-summary py-11"
             onClick={(e) => e.stopPropagation()}
           >
             {children}
           </div>{" "}
+          <div className=" relative bottom-20 left-64 flex justify-start items-center">
+            {" "}
+            <span className="text-4xl  transition-all ease-in-out duration-500 hover:text-5xl">
+              Close
+            </span>
+          </div>
         </div>
       </div>
     </>
