@@ -33,7 +33,7 @@ const BRANDS = [
 ];
 const AISearch = ({ selected, setSelected, partNames }) => {
   const [valueCm, setValueCm] = useState(90);
-  const [brand, setBrand] = useState("");
+  const [brand, setBrand] = useState("Nike");
 
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -74,7 +74,7 @@ const AISearch = ({ selected, setSelected, partNames }) => {
       sessionStorage.setItem(cacheKey, size);
       setResult(size);
     } catch (e) {
-      setErr("AI is unavailable right now.");
+      setErr("AI did not work. Try again.");
       setResult("X");
     } finally {
       setLoading(false);
@@ -82,7 +82,7 @@ const AISearch = ({ selected, setSelected, partNames }) => {
   }
 
   return (
-    <section className="flex flex-col items-center gap-5 lg:gap-9 border border-yellow-900  py-5 px-11 rounded-xl">
+    <section className="flex flex-col items-center gap-5 lg:gap-9 border border-[#f4dbb1]/50  pt-5 px-11 rounded-xl">
       <h3 className="font-semibold text-xl md:text-2xl">
         Find your size with AI
       </h3>
@@ -96,7 +96,7 @@ const AISearch = ({ selected, setSelected, partNames }) => {
           <select
             value={selected}
             onChange={(e) => setSelected(e.target.value)}
-            className="rounded-md border px-2 py-1 bg-white text-[#232121] md:text-xl"
+            className="rounded-md border px-2 py-1 bg-[#f4dbb1] text-[#232121] md:text-xl"
           >
             {partNames.map((name) => (
               <option key={name} value={name}>
@@ -117,7 +117,7 @@ const AISearch = ({ selected, setSelected, partNames }) => {
             step={1}
             value={valueCm}
             onChange={(e) => setValueCm(e.target.value)}
-            className="max-w-[260px]"
+            className="min-w-[250px]"
           />
         </label>
         <label className="flex items-center gap-2  md:text-xl">
@@ -125,7 +125,7 @@ const AISearch = ({ selected, setSelected, partNames }) => {
           <select
             value={brand}
             onChange={(e) => setBrand(e.target.value)}
-            className="rounded-md border px-2 w-52 py-1 bg-white text-[#232121] md:text-xl"
+            className="rounded-md border px-2 w-52 py-1 bg-[#f4dbb1] text-[#232121] md:text-xl"
           >
             {BRANDS.map((name) => (
               <option key={name} value={name} className="w-20">
@@ -147,7 +147,7 @@ const AISearch = ({ selected, setSelected, partNames }) => {
 
         <button
           className={`inline-flex items-center justify-center
-            h-11 px-4  rounded-xl bg-white text-[#232121]
+            h-11 px-4 mt-5 rounded-xl bg-[#f5f5f5] text-[#232121]
             shadow-sm hover:shadow-lg transition duration-200 ease-out
             hover:scale-105 active:scale-95 hover:-translate-y-0.5
             focus-visible:outline-none focus-visible:ring-4

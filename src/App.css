@@ -41,8 +41,7 @@ select {
   background-color: #3e3b38;
 }
 .project-by-container {
-  margin-top: 20px;
-  padding-bottom: 180px;
+  padding-bottom: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -69,6 +68,10 @@ button:hover {
   transition: 0.5s;
   cursor: pointer;
   background-color: #edeae4;
+}
+button {
+  transition: transform 0.25s ease, background-color 0.25s ease;
+  cursor: pointer;
 }
 
 button,
@@ -1432,8 +1435,6 @@ h2 {
     margin-bottom: 180px;
   }
   .project-by-container {
-    margin-top: 20px;
-    margin-bottom: 80px;
     display: flex;
     flex-direction: column;
     justify-content: center;

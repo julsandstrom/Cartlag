@@ -323,7 +323,7 @@ function App() {
           part={selectedPart}
         />
       )}
-      <div className=" flex flex-col gap-5 items-center justify-start ">
+      <div className=" flex flex-col gap-5  items-center justify-start ">
         {/* <NewCategoryForm
           onhandleNewCategorySave={handleNewCategorySave}
           newCategory={newCategory}
@@ -413,13 +413,37 @@ function App() {
             secondaryColor={secondaryColor}
           />
         </div>
+        <button
+          className="bg-[#f4dbb1] text-[#232121] px-5 py-2 rounded-xl md:text-xl lg:text-3xl"
+          onClick={handleDownload}
+        >
+          Download Profile
+        </button>
+      </div>{" "}
+      <section className="flex flex-col font-serif items-center gap-5 my-20 md:my-40 md:gap-16 lg:gap-20 2xl:gap-32 2xl:mt-44">
+        <p className="text-[#f5f5f5] text-2xl  md:text-6xl xl:text-5xl ">
+          40% of returns
+        </p>
+        <p className="text-xl md:text-2xl">
+          happen because clothes don’t <span className="font-bold">fit.</span>
+        </p>
+        <p className="text-[#f4dbb1] text-base font-serif md:text-xl xl:text-4xl ">
+          Cartlag makes sizing simple.
+        </p>
+      </section>
+      <section className="flex flex-col gap-5  items-center justify-center my-20 lg:my-48 ">
         {!showAI ? (
-          <button
-            className="bg-[#F5F5F5] text-[#232121] px-5 py-2 rounded-xl md:text-xl lg:text-3xl"
-            onClick={() => setShowAI(true)}
-          >
-            Find your size with AI
-          </button>
+          <div className="flex flex-col lg:gap-11 items-center py-6  px-10 lg:px-20 lg:py-16 rounded-xl border border-[#f4dbb1]/50 max-w-[350px] md:max-w-[600px] xl:max-w-[1000px] ">
+            <p className="text-xl md:text-4xl mb-3 xl:text-6xl">
+              Find your size with AI
+            </p>
+            <button
+              className="bg-[#f4dbb1] text-[#232121] px-5 py-2 rounded-xl md:text-xl lg:text-4xl lg:px-9"
+              onClick={() => setShowAI(true)}
+            >
+              Try
+            </button>
+          </div>
         ) : (
           <>
             <AISearch
@@ -427,33 +451,22 @@ function App() {
               setSelected={setSelected}
               partNames={partNames}
             />
-            <button
-              className="bg-[#fd6a6a] text-[#232121] px-5 py-2 rounded-xl md:text-xl"
+            {/* <button
+              className="bg-[#ef3434] text-[#232121] px-5 py-2 rounded-xl md:text-xl"
               onClick={() => setShowAI(false)}
             >
               Close AI helper
-            </button>
+            </button> */}
           </>
         )}
-      </div>{" "}
-      <section className="flex flex-col font-serif items-center gap-5 my-20 md:my-40 md:gap-16 lg:gap-20 2xl:gap-32 2xl:mt-44">
-        <p className="text-[#F5F5F5] text-2xl  md:text-6xl xl:text-5xl ">
-          40% of returns
-        </p>
-        <p className="text-xl md:text-2xl">
-          happen because clothes don’t <span className="font-bold">fit.</span>
-        </p>
-        <p className="text-[#F5F5F5] text-xs font-serif md:text-xl xl:text-4xl ">
-          Cartlag makes sizing simple.
-        </p>
       </section>
       <section className="flex justify-center ">
-        <div className="flex flex-col gap-3 md:gap-10 border border-yellow-900 rounded-xl items-center justify-center p-11 max-w-[350px] md:max-w-[600px] xl:max-w-[1000px] ">
+        <div className="flex flex-col text-center gap-3 md:gap-10 border border-[#f4dbb1]/50 rounded-xl items-center justify-center px-11 py-6 lg:py-11 max-w-[350px] md:max-w-[600px] xl:max-w-[1000px] ">
           <p className="text-xl md:text-4xl mb-3 xl:text-6xl">
             Here is your digital card
           </p>
           <button
-            className="bg-[#F5F5F5] text-[#232121] px-5 py-2 rounded-xl md:text-2xl xl:text-4xl"
+            className="bg-[#f4dbb1] text-[#232121] px-5 py-2 rounded-xl md:text-2xl xl:text-4xl"
             onClick={() => setShowSummary(!showSummary)}
           >
             Open
@@ -461,7 +474,7 @@ function App() {
           <div className="flex flex-col gap-3 justify-center items-center">
             <p className="mt-11 md:text-2xl xl:text-4xl">Download & Share</p>
             <button
-              className="bg-[#F5F5F5] text-[#232121] px-5 py-2 rounded-xl md:text-2xl xl:text-4xl"
+              className="bg-[#f4dbb1] text-[#232121] px-5 py-2 rounded-xl md:text-2xl xl:text-4xl"
               onClick={handleDownload}
             >
               Download
@@ -473,7 +486,7 @@ function App() {
               className="import-profile-container no-drag"
               onClick={() => document.querySelector(".import-json").click()}
             >
-              <button className="bg-[#F5F5F5] text-[#232121] px-5 py-2 rounded-xl md:text-2xl xl:text-4xl">
+              <button className="bg-[#f4dbb1] text-[#232121] px-5 py-2 rounded-xl md:text-2xl xl:text-4xl">
                 Import
               </button>
 
@@ -488,9 +501,21 @@ function App() {
           </div>
         </div>
       </section>
-      <div className="project-by-container pt-20 lg:p-40">
+      <section className="flex flex-col text-center font-serif items-center gap-9 my-20 md:my-40 md:gap-16 lg:gap-20 2xl:gap-32 2xl:mt-44 ">
+        <p className="text-[#f5f5f5] text-2xl  md:text-5xl  ">
+          Your body is like a fingerprint.
+        </p>
+        <p className="px-5   text-xl md:text-3xl">
+          Unique, consistent, and key to perfect
+          <span className="font-bold"> fit.</span>
+        </p>
+        <p className=" text-[#f4dbb1] text-base font-serif md:text-2xl xl:text-4xl ">
+          Cartlag helps you lock it in.
+        </p>
+      </section>
+      <div className="project-by-container  lg:p-40">
         {" "}
-        <span className="text-[#F5F5F5] font-bold text-base md:text-2xl xl:text-4xl">
+        <span className="text-[#f4dbb1] font-bold text-base md:text-2xl xl:text-4xl">
           Project by
         </span>
         <h4 className="text-[#F5F5F5]  text-base md:text-2xl xl:text-4xl">
