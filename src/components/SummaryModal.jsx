@@ -51,7 +51,7 @@ const SummaryModal = ({
           </div>{" "}
           <div className=" relative bottom-20 left-64 flex justify-start items-center">
             {" "}
-            <span className="text-2xl bg-[#f4dbb1] text-[#232121] px-5 py-2 rounded-xl  transition-all ease-in-out duration-500 hover:text-5xl">
+            <span className="text-2xl bg-[#f4dbb1] text-[#232121] px-5 py-2 rounded-xl  transition-all ease-in-out duration-500 hover:text-3xl">
               Close
             </span>
           </div>
