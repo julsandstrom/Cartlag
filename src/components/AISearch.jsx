@@ -82,7 +82,7 @@ const AISearch = ({ selected, setSelected, partNames }) => {
   }
 
   return (
-    <section className="flex flex-col items-center gap-5 lg:gap-9 border border-[#f4dbb1]/50  pt-5 px-11 rounded-xl">
+    <section className="flex flex-col items-center gap-5 lg:gap-9 border border-[#f4dbb1]/20  pt-5 px-11 rounded-xl">
       <h3 className="font-semibold text-xl md:text-2xl">
         Find your size with AI
       </h3>

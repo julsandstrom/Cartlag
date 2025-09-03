@@ -421,19 +421,19 @@ function App() {
         </button>
       </div>{" "}
       <section className="flex flex-col font-serif items-center gap-5 my-20 md:my-40 md:gap-16 lg:gap-20 2xl:gap-32 2xl:mt-44">
-        <p className="text-[#f5f5f5] text-2xl  md:text-6xl xl:text-5xl ">
+        <p className="text-[#f5f5f5] text-2xl  md:text-4xl lg:text-6xl xl:text-7xl ">
           40% of returns
         </p>
-        <p className="text-xl md:text-2xl">
+        <p className="text-xl md:text-2xl lg:text-5xl">
           happen because clothes don’t <span className="font-bold">fit.</span>
         </p>
-        <p className="text-[#f4dbb1] text-base font-serif md:text-xl xl:text-4xl ">
+        <p className="text-[#f4dbb1] text-base font-serif md:text-2xl  xl:text-4xl ">
           Cartlag makes sizing simple.
         </p>
       </section>
       <section className="flex flex-col gap-5  items-center justify-center my-20 lg:my-48 ">
         {!showAI ? (
-          <div className="flex flex-col lg:gap-11 items-center py-6  px-10 lg:px-20 lg:py-16 rounded-xl border border-[#f4dbb1]/50 max-w-[350px] md:max-w-[600px] xl:max-w-[1000px] ">
+          <div className="flex flex-col lg:gap-11 items-center py-6  px-10 lg:px-20 lg:py-16 rounded-xl border border-[#f4dbb1]/20 max-w-[350px] md:max-w-[600px] xl:max-w-[1000px] ">
             <p className="text-xl md:text-4xl mb-3 xl:text-6xl">
               Find your size with AI
             </p>
@@ -461,8 +461,8 @@ function App() {
         )}
       </section>
       <section className="flex justify-center ">
-        <div className="flex flex-col text-center gap-3 md:gap-10 border border-[#f4dbb1]/50 rounded-xl items-center justify-center px-11 py-6 lg:py-11 max-w-[350px] md:max-w-[600px] xl:max-w-[1000px] ">
-          <p className="text-xl md:text-4xl mb-3 xl:text-6xl">
+        <div className="flex flex-col text-center gap-3 md:gap-10 border border-[#f4dbb1]/20 rounded-xl items-center justify-center px-11 py-6 lg:py-11 max-w-[350px] md:max-w-[600px] xl:max-w-[1000px] ">
+          <p className="font-semibold text-xl md:text-4xl mb-3 xl:text-6xl">
             Here is your digital card
           </p>
           <button
